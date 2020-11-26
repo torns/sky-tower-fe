@@ -1,25 +1,71 @@
 import React, { Component }  from 'react';
-import './index.css';
+import { PageHeader, Affix, Button, Card } from 'antd';
+import './index.less';
 
 class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLogin: true,
+      isDev: false
     }
   }
 
-  gotoBaidu = () => {
-    window.location.href = 'https://www.baidu.com';
-  }
-
   render() {
-    
+    const { locationHrefInApp } = this.props;
+    const { isLogin, isDev } = this.state;
+
     return (   
-        <div>
-            <div className="note">欢迎进入FA监控平台</div>
-            <div className="note">不过，仍在开发中。。。现在啥也还没</div>
-            <div className="note" onClick={this.gotoBaidu}>百度以下，你就知道</div>
-        </div>
+      <div className="home-page">
+        <PageHeader
+          className="home-page-header"
+          backIcon={false}
+          title="FA监控平台"
+          subTitle="Flight Aware Monitoring Platform"
+        />
+        <Card
+          hoverable
+          style={{ width: '75%'}}
+        >
+          <Affix offsetTop={30}>
+            <div className="home-page-affix">
+              <Button style={{marginTop: 10,   marginLeft: 20, marginRight: 20 }} type="primary">
+                快速开始
+              </Button>
+              {
+                isLogin && <Button style={{marginTop: 10,   marginLeft: 20, marginRight: 20}} type="primary">
+                  新建项目
+                </Button>
+              }
+              {
+                isLogin && <Button style={{marginTop: 10,   marginLeft: 20, marginRight: 20}} type="primary" onClick={() => locationHrefInApp('profilePage')}>
+                  我的项目
+                </Button>
+              }
+              {
+                !isLogin && <Button style={{marginTop: 10,   marginLeft: 20, marginRight: 20}} type="primary" onClick={() => locationHrefInApp('loginPage')}>
+                  用户登陆
+                </Button>
+              }
+              {
+                !isLogin && <Button style={{marginTop: 10,   marginLeft: 20, marginRight: 20}} type="primary" onClick={() => locationHrefInApp('loginPage')}>
+                注册账号
+              </Button>
+              }
+              {
+                isDev && <Button style={{marginTop: 10,   marginLeft: 20, marginRight: 20}} type="primary">
+                内测调试
+              </Button>
+              }
+            </div>
+          </Affix>
+        </Card>
+        <Card
+          hoverable
+          style={{ width: '75%', marginTop: 20, height: 2000 }}
+        >
+        </Card>
+      </div>
     );
   }
 }
