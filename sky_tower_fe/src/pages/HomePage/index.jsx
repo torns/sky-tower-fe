@@ -1,5 +1,6 @@
 import React, { Component }  from 'react';
 import { PageHeader, Affix, Button, Card } from 'antd';
+import { Link } from "react-router-dom";
 import './index.less';
 
 class HomePage extends Component {
@@ -12,7 +13,6 @@ class HomePage extends Component {
   }
 
   render() {
-    const { locationHrefInApp } = this.props;
     const { isLogin, isDev } = this.state;
 
     return (   
@@ -38,19 +38,19 @@ class HomePage extends Component {
                 </Button>
               }
               {
-                isLogin && <Button style={{marginTop: 10,   marginLeft: 20, marginRight: 20}} type="primary" onClick={() => locationHrefInApp('profilePage')}>
+                isLogin && <Link to='/profile'><Button style={{marginTop: 10,   marginLeft: 20, marginRight: 20}} type="primary">
                   我的项目
-                </Button>
+                </Button></Link>
               }
               {
-                !isLogin && <Button style={{marginTop: 10,   marginLeft: 20, marginRight: 20}} type="primary" onClick={() => locationHrefInApp('loginPage')}>
+                !isLogin && <Link to='/login'><Button style={{marginTop: 10,   marginLeft: 20, marginRight: 20}} type="primary">
                   用户登陆
-                </Button>
+                </Button></Link>
               }
               {
-                !isLogin && <Button style={{marginTop: 10,   marginLeft: 20, marginRight: 20}} type="primary" onClick={() => locationHrefInApp('loginPage')}>
+                !isLogin && <Link to='/login'><Button style={{marginTop: 10,   marginLeft: 20, marginRight: 20}} type="primary">
                 注册账号
-              </Button>
+              </Button></Link>
               }
               {
                 isDev && <Button style={{marginTop: 10,   marginLeft: 20, marginRight: 20}} type="primary">

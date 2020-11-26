@@ -1,5 +1,6 @@
 import React, { Component }  from 'react';
 import { PageHeader, Card, Image, Descriptions, Button } from 'antd';
+import { Link } from "react-router-dom";
 import './index.less'; 
 
 const gridStyle = {
@@ -15,16 +16,15 @@ class ProfilePage extends Component {
   }
 
   render() {
-    const { locationHrefInApp } = this.props;
 
     return (
       <div className="profile-page">
-        <PageHeader
+        <Link to='/'><PageHeader
           className="profile-page-header"
-          onBack={() => locationHrefInApp('homePage')}
+          onBack={() => {}}
           title="我的"
           subTitle="Flight Aware Monitoring Platform"
-        />
+        /></Link>
         <div className="profile-page-profile">
           <Card
               hoverable

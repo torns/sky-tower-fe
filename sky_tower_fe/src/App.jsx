@@ -1,59 +1,34 @@
 import React, { Component }  from 'react';
-import { Layout } from 'antd';
+import { HashRouter as Router, Route } from "react-router-dom";
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import ProfilePage from './pages/ProfilePage';
+import VConsole from 'vconsole/dist/vconsole.min';
+import getEnv from './utils/getEnv.js';
 import './App.less';
 
-const { Header, Sider, Content } = Layout;
+// 只有内测版的SkyTower才外露vConsole
+const { env } = getEnv();
+var vConsole = env === 'dev' ? new VConsole() : null;
+console.log('Hello world', vConsole, getEnv());
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isHomePage: true,
-      isLoginPage: false,
-      isProfilePage: false,
     }
   }
 
-  onLoginSuccess = () => {
-    this.setState({
-      isLogin: true
-    })
-  }
-
-  locationHrefInApp = (component) => {
-    if (component === 'profilePage') {
-      this.setState({
-        isHomePage: false,
-        isLoginPage: false,
-        isProfilePage: true,
-      });
-    } else if (component === 'homePage') {
-      this.setState({
-        isHomePage: true,
-        isLoginPage: false,
-        isProfilePage: false,
-      });
-    } else if (component === 'loginPage'){
-      this.setState({
-        isHomePage: false,
-        isLoginPage: true,
-        isProfilePage: false,
-      });
-    }
-  }
 
   render() {
-    const { isLogin, isHomePage, isLoginPage, isProfilePage } = this.state;
-    
     return (
-      // isLogin ? <HomePage /> : <LoginPage onLoginSuccess={this.onLoginSuccess} />
-      <div>
-        { isProfilePage && <ProfilePage locationHrefInApp={this.locationHrefInApp}/> }
-        { isLoginPage && <LoginPage locationHrefInApp={this.locationHrefInApp}/> }
-        { isHomePage && <HomePage locationHrefInApp={this.locationHrefInApp}/> }
-      </div>
+      <Router>
+        <div>
+          <Route exact path="/" component={HomePage}/>
+          <Route path="/login" component={LoginPage}/>
+          <Route path="/profile" component={ProfilePage}/>
+        </div>
+      </Router>
     );
   }
 }

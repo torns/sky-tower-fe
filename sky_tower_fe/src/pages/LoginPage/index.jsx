@@ -1,5 +1,6 @@
 import React, { Component }  from 'react';
 import { Form, Input, Button, Card, PageHeader, Select } from 'antd';
+import { Link } from "react-router-dom";
 import './index.less';
 
 const layout = {
@@ -282,18 +283,18 @@ class LoginPage extends Component {
   }
 
   render() {
-    const { isLogin = true, isRegister = false, isUpdate = false, locationHrefInApp } = this.props;
+    const { isLogin = true, isRegister = false, isUpdate = false } = this.props;
 
     let title = this.getPageHeaderTitle(isLogin, isRegister, isUpdate);
 
     return (
       <div className="login-page">
-        <PageHeader
+        <Link to='/profile'><PageHeader
           className="login-page-header"
-          onBack={() => locationHrefInApp('homePage')}
+          onBack={() => {}}
           title={title}
           subTitle="Flight Aware Monitoring Platform"
-        />
+        /></Link>
         <Card
           hoverable
           style={{ width: '75%', marginTop: 20 }}
