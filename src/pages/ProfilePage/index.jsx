@@ -23,7 +23,7 @@ class ProfilePage extends Component {
           className="profile-page-header"
           onBack={() => {}}
           title="我的"
-          subTitle="Flight Aware Monitoring Platform"
+          subTitle="SkyTower front-end monitoring data center"
         /></Link>
         <div className="profile-page-profile">
           <Card

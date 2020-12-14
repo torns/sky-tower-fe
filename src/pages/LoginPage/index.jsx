@@ -293,7 +293,7 @@ class LoginPage extends Component {
           className="login-page-header"
           onBack={() => {}}
           title={title}
-          subTitle="Flight Aware Monitoring Platform"
+          subTitle="SkyTower front-end monitoring data center"
         /></Link>
         <Card
           hoverable
