@@ -20,8 +20,8 @@ class HomePage extends Component {
         <PageHeader
           className="home-page-header"
           backIcon={false}
-          title="FA监控平台"
-          subTitle="Flight Aware Monitoring Platform"
+          title="SkyTower 前端监控数据中心"
+          subTitle="SkyTower front-end monitoring data center"
         />
         <Card
           hoverable

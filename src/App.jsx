@@ -7,7 +7,6 @@ import VConsole from 'vconsole/dist/vconsole.min';
 import { init, emitter } from 'sky-tower';
 import getEnv from './utils/getEnv.js';
 import './App.less';
-// import reqwest from 'reqwest';
 
 // 只有内测版的SkyTower才外露vConsole
 const { env } = getEnv();
@@ -58,21 +57,6 @@ class App extends Component {
         resp: '{"status": 200}',
         is_success: true
     });
-
-  //   reqwest({
-  //     url: "http://localhost:8765/emit/count_event",
-  //     method: 'post',
-  //     type: 'json',
-  //     crossOrigin: true, /* 跨域请求 */
-  //     withCredentials: false,  /* 值为false，表示前端向服务端发请求时不带cookie */
-  //     data: {
-  //       event: 'click',
-  //       type: 'count',
-  //       time: 1606641411812,
-  //       pid: '456789',
-  //       uid: '2334233'
-  //     }
-  //   });
   }
 
 
