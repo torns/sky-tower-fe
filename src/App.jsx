@@ -15,8 +15,6 @@ const { env } = getEnv();
 var vConsole = env === 'dev' ? new VConsole() : null;
 console.log('Hello world', vConsole, getEnv());
 
-console.log('wc', getQuery());
-
 class App extends Component {
   constructor(props) {
     super(props);
