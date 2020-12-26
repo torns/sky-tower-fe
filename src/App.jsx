@@ -3,15 +3,19 @@ import { HashRouter as Router, Route } from "react-router-dom";
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import ProfilePage from './pages/ProfilePage';
+import DetailPage from './pages/DetailPage';
 import VConsole from 'vconsole/dist/vconsole.min';
 import { init, emitter } from 'sky-tower';
 import getEnv from './utils/getEnv.js';
 import './App.less';
+import getQuery from './utils/getQuery';
 
 // 只有内测版的SkyTower才外露vConsole
 const { env } = getEnv();
 var vConsole = env === 'dev' ? new VConsole() : null;
 console.log('Hello world', vConsole, getEnv());
+
+console.log('wc', getQuery());
 
 class App extends Component {
   constructor(props) {
@@ -67,6 +71,7 @@ class App extends Component {
           <Route exact path="/" component={HomePage}/>
           <Route path="/login" component={LoginPage}/>
           <Route path="/profile" component={ProfilePage}/>
+          <Route path="/detail" component={DetailPage}/>
         </div>
       </Router>
     );
