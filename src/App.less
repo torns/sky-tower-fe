@@ -1,5 +1,12 @@
 @import '~antd/dist/antd.css';
 
+// 手机屏幕宽度为375px，为了减少误差，max-width设为400px
+@media screen and (max-width: 400px) {
+  html, body {
+    overflow-x: hidden;
+  }
+}
+
 .App {
   text-align: center;
 }

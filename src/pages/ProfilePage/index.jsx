@@ -15,6 +15,17 @@ class ProfilePage extends Component {
     }
   }
 
+  handleDetailButtonClick = (project_id) => {
+    const { history } = this.props; 
+    history.push({
+      pathname: 'detail',
+      search: '?project_id=789123', // 明文传参，URL上带参数
+      query: {
+        project_id: '789123' // Query对象传参，URL上不带参数
+      }
+    });
+  }
+
   render() {
 
     return (
@@ -44,7 +55,7 @@ class ProfilePage extends Component {
                 <Descriptions
                   style={{textAlign: 'left'}} 
                   title="个人页面"
-                  extra={<Button type="primary">详情</Button>}
+                  extra={<Button type="primary" onClick={(project_id) => this.handleDetailButtonClick(project_id)}>详情</Button>}
                 >
                   <Descriptions.Item style={{width: '25%'}} label="项目id">623389</Descriptions.Item>
                   <Descriptions.Item style={{width: '45%'}} label="项目描述">这是一个react构建的前端项目，个人主页哈哈哈。</Descriptions.Item>
