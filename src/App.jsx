@@ -8,7 +8,6 @@ import VConsole from 'vconsole/dist/vconsole.min';
 import { init, emitter } from 'sky-tower';
 import getEnv from './utils/getEnv.js';
 import './App.less';
-import getQuery from './utils/getQuery';
 
 // 只有内测版的SkyTower才外露vConsole
 const { env } = getEnv();

@@ -8,14 +8,14 @@ export default function getQuery() {
 
   // remove hash
   let search = url.split('/#/');
-  if (search != -1 && Array.isArray(search) && search.length > 1) {
+  if (search !== -1 && Array.isArray(search) && search.length > 1) {
       url = search[1];
   }
 
   // get queryString
-  const queryString = Array.isArray(url.split('?')) 
+  const queryString = (Array.isArray(url.split('?')) 
     && url.split('?').length > 1 
-    && url.split('?')[1] || '';
+    && url.split('?')[1]) || '';
 
   // get queryObject and remove undefined
   queryString.split('&').forEach(item => {
