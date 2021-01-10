@@ -13,16 +13,22 @@
     - 开发记录页
     - 内测调试页（开发调试用)
     - 提供聚合上报策略
+
 ## 本地开发调试
-- 很简单 npm install 
-- npm run dev 
+- 很简单
+  - npm install 
+  - npm run dev 
+- 也可以使用yarn
+  - nvm use 12.13.0
+  - yarn install
+  - yarn run dev 
 - 调试线上版本页面
-    - 首页: http://localhost:9998/#/
-    - 注册登陆页: http://localhost:9998/#/login
-    - 项目列表页: http://localhost:9998/#/profile
+  - 首页: http://localhost:9998/#/
+  - 注册登陆页: http://localhost:9998/#/login
+  - 项目列表页: http://localhost:9998/#/profile
 - 调试内测版本页面
-    - 内测版本页面URL拼接规则：在UrlQuery上加上env=dev参数即可命中内测版页面，例如内测版本的项目列表页: http://localhost:9998/?env=dev&/#/profile
-    - 测试阶段需要先发布在内测版本页面，ready后再发布到正式版本页面
+  - 内测版本页面URL拼接规则：在UrlQuery上加上env=dev参数即可命中内测版页面，例如内测版本的项目列表页: http://localhost:9998/?env=dev&/#/profile
+  - 测试阶段需要先发布在内测版本页面，ready后再发布到正式版本页面
 
 ## 发布新feature到内测版本
 ```js
