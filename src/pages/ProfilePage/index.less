@@ -20,4 +20,21 @@
   .profile-page-profile {
     width: 80%;
   }
+
+  .create-new-project-button {
+    position: fixed;
+    width: 200px;
+    height: 45px;
+    border-radius: 30px;
+    box-shadow: 0px 2px 8px rgba(240, 65, 66, 0.2);
+    left: 0;
+    right: 0;
+    bottom: 56px;
+    margin: 0 auto;
+    z-index: 1000;
+    @supports (bottom: env(safe-area-inset-bottom)) or (bottom: constant(safe-area-inset-bottom)) {
+      bottom: calc(env(safe-area-inset-bottom) + 56px);
+      bottom: calc(constant(safe-area-inset-bottom) + 56px)
+    }
+  }
 }

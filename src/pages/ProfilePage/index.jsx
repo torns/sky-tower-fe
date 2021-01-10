@@ -1,19 +1,52 @@
 import React, { Component }  from 'react';
-import { PageHeader, Card, Image, Descriptions, Button } from 'antd';
+import { PageHeader, Card, Image, Descriptions, Button, Modal } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import { Link } from "react-router-dom";
+import { eventStop } from '../../utils/eventStop';
 import './index.less'; 
 
 const gridStyle = {
   width: '100%',
   textAlign: 'center',
+  marginBottom: 5,
+  borderRadius: 15
 };
 
 class ProfilePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      visible: false,
+      confirmLoading: false,
+      modalText: 'Content of the modal'
     }
   }
+
+  showModal = (e) => {
+    eventStop(e);
+    this.setState({
+      visible: true
+    })
+  };
+
+  handleOk = () => {
+    this.setState({
+      modalText: 'The modal will be closed after two seconds',
+      confirmLoading: true
+    })
+    setTimeout(() => {
+      this.setState({
+        visible: false,
+        confirmLoading: false
+      })
+    }, 2000);
+  };
+
+  handleCancel = () => {
+    this.setState({
+      visible: false
+    })
+  };
 
   handleDetailButtonClick = (project_id) => {
     const { history } = this.props; 
@@ -27,6 +60,7 @@ class ProfilePage extends Component {
   }
 
   render() {
+    const { visible, confirmLoading, modalText } = this.state;
 
     return (
       <div className="profile-page">
@@ -50,7 +84,7 @@ class ProfilePage extends Component {
               />
               <Card.Meta style={{ marginTop: 20 }} title="我是个小前端" description="项目数: 6" />
             </Card>
-            <Card style={{marginTop: 10}}>
+            <Card style={{marginTop: 10, borderRadius: 15}}>
               <Card.Grid style={gridStyle}>
                 <Descriptions
                   style={{textAlign: 'left'}} 
@@ -119,6 +153,18 @@ class ProfilePage extends Component {
               </Card.Grid>
             </Card>
         </div>
+        <Button className="create-new-project-button" type="primary" onClick={this.showModal}>
+          <PlusOutlined /> 创建一个新的项目
+        </Button>
+        <Modal
+          title="Title"
+          visible={visible}
+          onOk={this.handleOk}
+          confirmLoading={confirmLoading}
+          onCancel={this.handleCancel}
+        >
+          <p>{modalText}</p>
+        </Modal>
       </div>
     );
   }
