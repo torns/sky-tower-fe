@@ -1,41 +1,38 @@
 import React from 'react';
-import { Statistic, Row, Col, DatePicker, Space, Table, Radio } from 'antd';
-import PvUvChart from '../pv-uv-chart';
+import { Result, Button } from 'antd';
 import './index.less';
 
-const { RangePicker } = DatePicker;
+// 日期格式化
+Date.prototype.Format = function (fmt) {
+  var o = {
+      "M+": this.getMonth() + 1, //月份 
+      "d+": this.getDate(), //日 
+      "H+": this.getHours(), //小时 
+      "m+": this.getMinutes(), //分 
+      "s+": this.getSeconds(), //秒 
+      "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+      "S": this.getMilliseconds() //毫秒 
+  };
+  if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+  for (var k in o)
+  if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+  return fmt;
+}
 
-const SimultaneousOnlineInfoByTimeData = [
-  {
-    key: '0',
-    name: 'SimultaneousOnlineInfoByTime',
-    pv: 123233,
-    uv: 32636
-  }
-];
-
-const SimultaneousOnlineInfoByTimeColumns = [
-  {
-    title: '项目访问量',
-    dataIndex: 'pv',
-    key: 'pv',
-    width: '500px',
-    align: 'center',
-  },
-  {
-    title: '用户量',
-    dataIndex: 'uv',
-    key: 'uv',
-    width: '500px',
-    align: 'center'
-  }
-];
+// // 重新加载
+// function handleRetry (props) {
+//   if (props.handleReload && typeof props.handleReload === 'function') {
+//       props.handleReload();
+//   } else {
+//       window.location.reload();
+//   }
+// }
 
 class SimultaneousOnlineInfo extends React.Component {
   constructor () {
     super();
     this.state = {
-
+      currentTime: new Date().Format("yyyy-MM-dd HH:mm:ss")
     };
   }
 
@@ -44,54 +41,39 @@ class SimultaneousOnlineInfo extends React.Component {
     console.log(project_id);
   }
 
-  handleDatePickerChange = (moment, dateString) => {
-    console.log(Number(moment[0]), dateString[0]);
-    console.log(Number(moment[1]), dateString[1]);
+  handleClickJumpButton = () => {
+    window.location.href = 'https://www.baidu.com';
   }
 
-  handleRadioChange = (e, v) => {
-    console.log(e.target.value);
+  handleRefresh = () => {
+    this.setState({
+      currentTime: new Date().Format("yyyy-MM-dd HH:mm:ss")
+    })
   }
 
   render() {
+    const { currentTime } = this.state;
+    const simultaneousOnlineCount = 127;
 
     return (
-      <div className="pv-uv-info">
+      <div className="simultaneous-online-info">
         <div className="title">
-          项目总访问量、项目总用户量
+          同时在线信息
         </div>
-        <div className="all-pv-uv-info">
-          <Row gutter={24}>
-            <Col span={50}>
-              <Statistic title="Page View (pv)" value={1128923000} />
-            </Col>
-            <Col span={50}>
-              <Statistic title="Unique visitor (uv)" value={667858323232} />
-            </Col>
-          </Row>
-        </div>
-        <div className="title">
-          项目近期的 pv、uv 曲线
-        </div>
-        <div className="pv-uv-chart">
-          <Radio.Group defaultValue="last_week" buttonStyle="solid" onChange={this.handleRadioChange}>
-            <Radio.Button style={{ marginRight: 10}} value="last_six_month">最近六个月</Radio.Button>
-            <Radio.Button style={{ marginRight: 10}} value="last_month">最近一个月</Radio.Button>
-            <Radio.Button style={{ marginRight: 10}} value="last_week">最近一个星期</Radio.Button>
-            <Radio.Button style={{ marginRight: 10}} value="last_day">最近一天</Radio.Button>
-          </Radio.Group>
-          <PvUvChart />
-        </div>
-        <div className="title">
-          某时间段内pv、uv查询
-        </div>
-        <div className="pv-uv-table">
-          <Space direction="vertical" size={12}>
-            <RangePicker showTime onChange={this.handleDatePickerChange}/>
-          </Space>
-        </div>
-        <div>
-          <Table columns={SimultaneousOnlineInfoByTimeColumns} dataSource={SimultaneousOnlineInfoByTimeData} pagination={false} />
+        <div className="result">
+          <Result
+            style={{ widows: '100%'}}
+            status="success"
+            title={`当前在线人数为：${simultaneousOnlineCount}`}
+            subTitle={`获取当前在线人数成功，当前时间为: ${currentTime} `}
+            extra={[
+              <Button type="primary" onClick={this.handleClickJumpButton}>
+                进入该项目
+              </Button>,
+              // <Button onClick={() => handleRetry(this.props)}>刷新</Button>,
+              <Button onClick={this.handleRefresh}>刷新</Button>,
+            ]}
+          />
         </div>
       </div>
     );

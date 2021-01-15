@@ -62,7 +62,7 @@ class DetailPage extends Component {
                { `导航  `} <DownOutlined />
             </a>
           </Dropdown> }
-          <div>
+          <div className="active-tab-content">
             {
               this.renderActiveTabContent(activeTab)
             }
