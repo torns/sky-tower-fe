@@ -15,11 +15,12 @@ class DetailPage extends Component {
     this.state = {
       activeTab: 'PvUvInfo'
     }
+    this.query = getQuery();
     this.isPhone =  document.body.clientWidth < 450 || document.documentElement.clientWidth < 450;
   }
 
   componentDidMount () {
-    console.log(getQuery()); // 获取项目id
+
   }
 
   handleActiveTabChange = (activeTab) => {
@@ -32,7 +33,7 @@ class DetailPage extends Component {
     console.log(activeTab);
     switch (activeTab) {
       case 'ProjectDetailsInfo': return <ProjectDetailsInfo />;
-      case 'PvUvInfo': return <PvUvInfo />;
+      case 'PvUvInfo': return <PvUvInfo project_id={this.query.project_id}/>;
       default: return null;
     }
   }
