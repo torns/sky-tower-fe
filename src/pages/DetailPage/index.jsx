@@ -2,6 +2,7 @@ import React, { Component }  from 'react';
 import { Card, PageHeader, Dropdown} from 'antd';
 import Sider from './components/sider';
 import ProjectDetailsInfo from './components/project-details-info';
+import SimultaneousOnlineInfo from './components/simultaneous-online-info';
 import PvUvInfo from './components/pv-uv-info';
 import { DownOutlined } from '@ant-design/icons';
 import { Link } from "react-router-dom";
@@ -34,6 +35,7 @@ class DetailPage extends Component {
     switch (activeTab) {
       case 'ProjectDetailsInfo': return <ProjectDetailsInfo />;
       case 'PvUvInfo': return <PvUvInfo project_id={this.query.project_id}/>;
+      case 'SimultaneousOnlineInfo': return <SimultaneousOnlineInfo project_id={this.query.project_id}/>
       default: return null;
     }
   }
@@ -60,7 +62,7 @@ class DetailPage extends Component {
                { `导航  `} <DownOutlined />
             </a>
           </Dropdown> }
-          <div>
+          <div className="active-tab-content">
             {
               this.renderActiveTabContent(activeTab)
             }
