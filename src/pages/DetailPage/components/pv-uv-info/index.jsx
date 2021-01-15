@@ -1,10 +1,11 @@
 import React from 'react';
-import { Statistic, Row, Col, DatePicker, Space, Table } from 'antd';
+import { Statistic, Row, Col, DatePicker, Space, Table, Radio } from 'antd';
+import PvUvChart from '../pv-uv-chart';
 import './index.less';
 
 const { RangePicker } = DatePicker;
 
-const data = [
+const pvUvInfoByTimeData = [
   {
     key: '0',
     name: 'pvUvInfoByTime',
@@ -13,7 +14,7 @@ const data = [
   }
 ];
 
-const columns = [
+const pvUvInfoByTimeColumns = [
   {
     title: '项目访问量',
     dataIndex: 'pv',
@@ -48,6 +49,10 @@ class PvUvInfo extends React.Component {
     console.log(Number(moment[1]), dateString[1]);
   }
 
+  handleRadioChange = (e, v) => {
+    console.log(e.target.value);
+  }
+
   render() {
 
     return (
@@ -68,7 +73,14 @@ class PvUvInfo extends React.Component {
         <div className="title">
           项目近期的 pv、uv 曲线
         </div>
-        <div>
+        <div className="pv-uv-chart">
+          <Radio.Group defaultValue="last_week" buttonStyle="solid" onChange={this.handleRadioChange}>
+            <Radio.Button style={{ marginRight: 10}} value="last_six_month">最近六个月</Radio.Button>
+            <Radio.Button style={{ marginRight: 10}} value="last_month">最近一个月</Radio.Button>
+            <Radio.Button style={{ marginRight: 10}} value="last_week">最近一个星期</Radio.Button>
+            <Radio.Button style={{ marginRight: 10}} value="last_day">最近一天</Radio.Button>
+          </Radio.Group>
+          <PvUvChart />
         </div>
         <div className="title">
           某时间段内pv、uv查询
@@ -79,7 +91,7 @@ class PvUvInfo extends React.Component {
           </Space>
         </div>
         <div>
-          <Table columns={columns} dataSource={data} pagination={false} />
+          <Table columns={pvUvInfoByTimeColumns} dataSource={pvUvInfoByTimeData} pagination={false} />
         </div>
       </div>
     );
