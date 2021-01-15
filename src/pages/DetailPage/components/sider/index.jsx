@@ -32,7 +32,7 @@ class Sider extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="sider-container">
         <Menu
           theme={this.state.theme}
           onClick={this.handleClick}
