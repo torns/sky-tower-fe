@@ -87,13 +87,24 @@ const scale = {
 	}
 }
 
-export default function PvUvChart() {
-	return <Chart scale={scale} padding={[30, 20, 50, 40]} autoFit height={320} data={data} interactions={['element-active']}>
-		<Point position="x*value" color="key" shape='circle' />
-		<Line shape="smooth" position="x*value" color="key" label="value" />
-		<Tooltip shared showCrosshairs />
-	</Chart>
+class PvUvChart extends React.Component {
+	constructor () {
+		super();
+		this.state = {
+
+		};
+	}
+
+	render () {
+		// return <Chart scale={scale} padding={[30, 20, 50, 40]} autoFit height={320} data={data} interactions={['element-active']}>
+		// 	<Point position="x*value" color="key" shape='circle' />
+		// 	<Line shape="smooth" position="x*value" color="key" label="value" />
+		// 	<Tooltip shared showCrosshairs />
+		// </Chart>;
+		return null;
+	}
 }
 
+export default PvUvChart;
 
 
