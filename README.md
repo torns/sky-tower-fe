@@ -26,6 +26,7 @@
   - 首页: http://localhost:9998/#/
   - 注册登陆页: http://localhost:9998/#/login
   - 项目列表页: http://localhost:9998/#/profile
+  - 项目详情页: http://localhost:9998/#/detail?project_id=`${project_id}`
 - 调试内测版本页面
   - 内测版本页面URL拼接规则：在UrlQuery上加上env=dev参数即可命中内测版页面，例如内测版本的项目列表页: http://localhost:9998/?env=dev&/#/profile
   - 测试阶段需要先发布在内测版本页面，ready后再发布到正式版本页面
