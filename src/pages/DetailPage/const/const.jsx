@@ -37,3 +37,14 @@ export const menuOnPhone = (
     <Menu.Item danger>删除项目</Menu.Item>
   </Menu>
 );
+
+export const ACTION = {
+  'event': '事件名称',
+  'location': '地理位置',
+  'device_brand': '机型',
+  'app_version': '页面版本号',
+  'system_version': '系统版本',
+  'client': '客户端类型',
+  'net_type': '网络类型',
+  'ip_address': 'ip地址'
+};
