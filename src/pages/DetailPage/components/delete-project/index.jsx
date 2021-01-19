@@ -1,7 +1,6 @@
 import React from 'react';
 import { Switch, Button, Popconfirm } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-
 import './index.less';
 
 class DeleteProject extends React.Component {
