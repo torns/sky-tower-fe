@@ -5,6 +5,7 @@ import ProjectDetailsInfo from './components/project-details-info';
 import SimultaneousOnlineInfo from './components/simultaneous-online-info';
 import PvUvInfo from './components/pv-uv-info';
 import AllQueryConditions from './components/all-query-conditions';
+import DeleteProject from './components/delete-project';
 import { DownOutlined } from '@ant-design/icons';
 import { Link } from "react-router-dom";
 import getQuery from '../../utils/getQuery.js';
@@ -38,6 +39,7 @@ class DetailPage extends Component {
       case 'PvUvInfo': return <PvUvInfo project_id={this.query.project_id}/>;
       case 'SimultaneousOnlineInfo': return <SimultaneousOnlineInfo project_id={this.query.project_id}/>
       case 'AllQueryConditions': return <AllQueryConditions project_id={this.query.project_id} />
+      case 'DeleteProject': return <DeleteProject project_id={this.query.project_id} />
       default: return null;
     }
   }
