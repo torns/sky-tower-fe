@@ -31,8 +31,10 @@ class Sider extends React.Component {
   };
 
   render() {
+    const { theme } = this.state;
+
     return (
-      <div className="sider-container">
+      <div className={ theme === "light" ? "sider-container-light" : "sider-container" }>
         <Menu
           theme={this.state.theme}
           onClick={this.handleClick}
