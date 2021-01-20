@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Space, DatePicker } from 'antd';
+import { Input, Space, DatePicker, Checkbox } from 'antd';
 import ReactJson from 'react-json-view';
 import './index.less';
 
@@ -10,7 +10,7 @@ class SinglePointTracing extends React.Component {
   constructor () {
     super();
     this.state = {
-
+      isOnlyGetHttpInfo: false
     };
   }
 
@@ -28,7 +28,15 @@ class SinglePointTracing extends React.Component {
     console.log(Number(moment[1]), dateString[1]);
   }
 
+  onCheckBoxChange = (e) => {
+    this.setState({
+      isOnlyGetHttpInfo: e.target.value
+    })
+  }
+
   render() {
+    const { isOnlyGetHttpInfo } = this.state;
+
     const data = {
         "err_no": 0,
         "err_message": "success", 
@@ -54,11 +62,15 @@ class SinglePointTracing extends React.Component {
           根据给定 user_id 追查问题
         </div>
         <div className="search-container">
-          <Search placeholder="请输入 user_id 追查问题" allowClear onSearch={this.onSearch} style={{ width: 400 }} enterButton />
-          <div className="date-picker">
+          <Search placeholder="请输入 user_id 追查问题" allowClear onSearch={this.onSearch} style={{ width: 390 }} enterButton />
+          <div className="search-filter">
             <Space direction="vertical" size={12}>
               <RangePicker showTime onChange={this.handleDatePickerChange}/>
             </Space>
+            <div className="checkbox">
+              <Checkbox defaultChecked={isOnlyGetHttpInfo} onChange={this.onCheckBoxChange} />
+              <div className="checkbox-label">仅查询网络请求</div>
+            </div>
           </div>
         </div>
         <div className="title">
