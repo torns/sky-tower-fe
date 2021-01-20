@@ -6,6 +6,7 @@ import SimultaneousOnlineInfo from './components/simultaneous-online-info';
 import PvUvInfo from './components/pv-uv-info';
 import AllQueryConditions from './components/all-query-conditions';
 import CountEvent from './components/count-event';
+import SinglePointTracing from './components/single-point-tracing';
 import ModifyProjectInfo from './components/modify-project-info';
 import DeleteProject from './components/delete-project';
 import { DownOutlined } from '@ant-design/icons';
@@ -40,6 +41,7 @@ class DetailPage extends Component {
       case 'PvUvInfo': return <PvUvInfo project_id={this.query.project_id}/>;
       case 'SimultaneousOnlineInfo': return <SimultaneousOnlineInfo project_id={this.query.project_id}/>;
       case 'AllQueryConditions': return <AllQueryConditions project_id={this.query.project_id}/>;
+      case 'SinglePointTracing': return <SinglePointTracing project_id={this.query.project_id}/>
       case 'DeleteProject': return <DeleteProject project_id={this.query.project_id}/>;
       case 'ModifyProjectInfo': return <ModifyProjectInfo project_id={this.query.project_id}/>;
       case 'CountEvent': return <CountEvent project_id={this.query.project_id}/>
