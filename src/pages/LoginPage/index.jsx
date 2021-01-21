@@ -79,7 +79,7 @@ class LoginPage extends Component {
       <Form
         {...layout}
         name="basic"
-        initialValues={{ remember: true }}
+        initialValues={{ username: this.query.username }}
         size="large"
         colon={false}
         style={{marginTop: 20}}
@@ -91,7 +91,7 @@ class LoginPage extends Component {
           name="username"
           rules={[{ required: true, message: '请输入用户名' }]}
         >
-          <Input allowClear defaultValue={username} />
+          <Input allowClear />
         </Form.Item>
 
         <Form.Item

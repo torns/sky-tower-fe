@@ -10,32 +10,44 @@ class HomePage extends Component {
     this.state = {
       isLogin: true,
       isDev: false,
-      loginInUsername: ''
+      usernameForLogin: ''
     }
   }
 
   handleLoginInputChange = (e) => {
     this.setState({
-      loginInUsername: e.target.value
+      usernameForLogin: e.target.value
     })
   }
 
   render() {
-    const { isLogin, isDev, loginInUsername } = this.state;
-    console.log(loginInUsername);
+    const { isLogin, isDev, usernameForLogin } = this.state;
+    
+    // 登陆页面路由
     const loginPath = {
       pathname: '/login',
-      search: `?page_type=login&username=${loginInUsername}`
+      search: `?page_type=login&username=${usernameForLogin}`
     };
+
+    // 注册页面路由
+    const registerPath = {
+      pathname: '/login',
+      search: '?page_type=register'
+    }
 
     return (   
       <div className="container">
-        <PageHeader
-          className="home-page-header"
-          backIcon={false}
-          title="SkyTower 前端监控数据中心"
-          subTitle="SkyTower front-end monitoring data center"
-        />
+        <div className="page-header">
+          <PageHeader
+            className="page-header-nav"
+            backIcon={false}
+            title="SkyTower 前端监控数据中心"
+            subTitle="SkyTower front-end monitoring data center"
+          />
+          <Link to={registerPath}>
+            <div className="register-entrance" onClick={this.handleClickRegisterLink}>注册</div>
+          </Link>
+        </div>
         <div className="poster-background">
           <img className="poster" src={homePagePoster}/>
         </div>
