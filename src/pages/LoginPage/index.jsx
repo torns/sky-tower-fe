@@ -1,6 +1,7 @@
 import React, { Component }  from 'react';
 import { Form, Input, Button, Card, PageHeader, Select } from 'antd';
 import { Link } from "react-router-dom";
+import getQuery from '../../utils/getQuery.js';
 import './index.less';
 
 const layout = {
@@ -22,6 +23,8 @@ const prefixSelector = (
 class LoginPage extends Component {
   constructor(props) {
     super(props);
+    this.query = getQuery();
+    console.log(this.query);
     this.state = {
     }
   }
@@ -58,15 +61,13 @@ class LoginPage extends Component {
     console.log('Failed:', errorInfo);
   };  
 
-  getPageHeaderTitle = (isLogin, isRegister, isUpdate) => {
-    if (isLogin) {
-      return '登陆';
-    } else if (isRegister) {
-      return '注册';
-    } else if (isUpdate) {
-      return '修改个人信息';
-    } else {
-      return '注册登陆页';
+  getPageHeaderTitle = (page_type) => {
+    console.log(page_type);
+    switch (page_type) {
+      case 'login': return '登陆';
+      case 'register': return '注册';
+      case 'update': return '更新';
+      default: return '注册登陆页';
     }
   }
 
@@ -162,15 +163,7 @@ class LoginPage extends Component {
           <Input.Password allowClear />
         </Form.Item>
 
-        <Form.Item
-          label="命名空间"
-          name="namespace"
-          rules={[{ required: true, message: '请输入项目的命名空间' }]}
-        >
-          <Input allowClear />
-        </Form.Item>
-
-        <Form.Item name="email" label="Email" rules={[{ required: true, type: 'email' }]}>
+        <Form.Item name="email" label="Email" rules={[{ required: true, type: 'email', message: '请输入正确的邮箱地址' }]}>
           <Input allowClear />
         </Form.Item>
 
@@ -193,6 +186,7 @@ class LoginPage extends Component {
 
   renderIsUpdate = () => {
     const { onUpdateFinish, onUpdateFinishFailed } = this;
+    const { user_id } = this.query;
 
     return (
       <div>
@@ -211,7 +205,7 @@ class LoginPage extends Component {
             name="user_id"
             rules={[{ required: true }]}
           >
-            <Input disabled allowClear defaultValue="9695888" />
+            <Input disabled allowClear defaultValue={user_id} />
           </Form.Item>
           <Form.Item
             label="用户名"
@@ -252,15 +246,7 @@ class LoginPage extends Component {
             <Input.Password allowClear />
           </Form.Item>
 
-          <Form.Item
-            label="命名空间"
-            name="namespace"
-            rules={[{ required: true, message: '请输入项目的命名空间' }]}
-          >
-            <Input allowClear disabled />
-          </Form.Item>
-
-          <Form.Item name="email" label="Email" rules={[{ required: true, type: 'email' }]}>
+          <Form.Item name="email" label="Email" rules={[{ required: true, type: 'email', message: '请输入正确的邮箱地址' }]}>
             <Input allowClear />
           </Form.Item>
 
@@ -283,9 +269,9 @@ class LoginPage extends Component {
   }
 
   render() {
-    const { isLogin = true, isRegister = false, isUpdate = false } = this.props;
+    const { page_type } = this.query;
 
-    let title = this.getPageHeaderTitle(isLogin, isRegister, isUpdate);
+    let title = this.getPageHeaderTitle(page_type);
 
     return (
       <div className="login-page">
@@ -300,13 +286,13 @@ class LoginPage extends Component {
           style={{ width: '75%', marginTop: 20 }}
         >
           {
-            isLogin && this.renderIsLogin()
+            page_type === 'login' && this.renderIsLogin()
           }
           {
-            isRegister && this.renderIsRegister()
+            page_type === 'register' && this.renderIsRegister()
           }
           {
-            isUpdate && this.renderIsUpdate()
+            page_type === 'update' && this.renderIsUpdate()
           }
         </Card>
       </div>
