@@ -73,12 +73,13 @@ class LoginPage extends Component {
 
   renderIsLogin = () => {
     const { onLoginFinish, onLoginFinishFailed } = this;
+    const { username } = this.query;
 
     return (
       <Form
         {...layout}
         name="basic"
-        initialValues={{ remember: true }}
+        initialValues={{ username: this.query.username }}
         size="large"
         colon={false}
         style={{marginTop: 20}}

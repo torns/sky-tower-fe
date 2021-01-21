@@ -1,5 +1,83 @@
 @import '../../App.less';
 
+
+.page-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .register-entrance {
+        margin: 20px 20px;
+        text-align: end;
+    }  
+}
+
+.poster-background {
+    position: absolute;
+    width: 100%;
+    z-index: -1;
+
+    .poster {
+        width: 100%;
+    }
+}
+
+.poster-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 810px;
+    background: #000000;
+    opacity: 0.7;
+
+    .poster-qa {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 36px 20px 36px;
+
+        .poster-question {
+            font-size: 36px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .poster-answer {
+            font-size: 36px;
+            color: #ffffff;
+            margin: 10px;
+        }
+    }
+
+    .poster-detail {
+        margin-top: 10px;
+        margin-bottom: 12px;
+        max-width: 850px;
+        text-indent: 2em;
+        font-size: 16px;
+        color: #ffffff;
+    }
+
+    .poster-login-in {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 56px 0;
+
+        .ant-input {
+            width: 330px;
+            height: 36px;
+            border: unset;
+        }
+
+        .login-in-button {
+            margin: 0 24px;
+        }
+    }
+}
+
 .home-page {
     width: 100%;
     display: flex;
@@ -7,10 +85,6 @@
     justify-content: center;
     align-items: center;
     margin: 30px 20px 20px 20px;
-
-    .home-page-header {
-        width: 100%;
-    }
 
     .home-page-affix {
         display: flex;
