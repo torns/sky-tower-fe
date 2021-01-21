@@ -73,6 +73,7 @@ class LoginPage extends Component {
 
   renderIsLogin = () => {
     const { onLoginFinish, onLoginFinishFailed } = this;
+    const { username } = this.query;
 
     return (
       <Form
@@ -90,7 +91,7 @@ class LoginPage extends Component {
           name="username"
           rules={[{ required: true, message: '请输入用户名' }]}
         >
-          <Input allowClear />
+          <Input allowClear defaultValue={username} />
         </Form.Item>
 
         <Form.Item
