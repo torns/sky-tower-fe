@@ -3,9 +3,9 @@
 ## SkyTower前端
 - 技术栈：react + antd
 - todo
-    - 初始化前端项目 已完成；
+    - 初始化前端项目
     - 首页
-    - 项目列表页 已完成；
+    - 项目列表页
     - 项目详情页 
     - 注册页
     - 登陆页
@@ -24,11 +24,13 @@
   - yarn run dev 
 - 调试线上版本页面
   - 首页: http://localhost:9998/#/
-  - 注册登陆页: http://localhost:9998/#/login
+  - 注册页: http://localhost:9998/#/login?page_type=register
+  - 登陆页: http://localhost:9998/#/login?page_type=login
+  - 用户信息更新页: http://localhost:9998/#/login?page_type=update&user_id=`${user_id}`
   - 项目列表页: http://localhost:9998/#/profile
   - 项目详情页: http://localhost:9998/#/detail?project_id=`${project_id}`
 - 调试内测版本页面
-  - 内测版本页面URL拼接规则：在UrlQuery上加上env=dev参数即可命中内测版页面，例如内测版本的项目列表页: http://localhost:9998/?env=dev&/#/profile
+  - 内测版本页面URL拼接规则：在UrlQuery上初始化use_env_tag=1和env=dev参数即可命中内测版页面，例如内测版本的项目列表页: http://localhost:9998/?use_env_tag=1&env=dev&/#/profile
   - 测试阶段需要先发布在内测版本页面，ready后再发布到正式版本页面
 
 ## 发布新feature到内测版本

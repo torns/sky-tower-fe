@@ -11,8 +11,10 @@ import './App.less';
 
 // 只有内测版的SkyTower才外露vConsole
 const { env } = getEnv();
-var vConsole = env === 'dev' ? new VConsole() : null;
-console.log('Hello world', vConsole, getEnv());
+const vConsole = env === 'dev' ? new VConsole() : null;
+if (vConsole) {
+  console.log('SkyTower前端监控数据中心 内测版', vConsole, env);
+}
 
 class App extends Component {
   constructor(props) {
