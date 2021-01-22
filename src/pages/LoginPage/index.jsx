@@ -79,7 +79,7 @@ class LoginPage extends Component {
       <Form
         {...layout}
         name="basic"
-        initialValues={{ username: this.query.username }}
+        initialValues={{ username: decodeURIComponent(username) }}
         size="large"
         colon={false}
         style={{marginTop: 20}}
