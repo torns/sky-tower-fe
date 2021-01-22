@@ -1274,6 +1274,13 @@
   dependencies:
     "regenerator-runtime" "^0.13.4"
 
+"@babel/runtime@7.11.2":
+  "integrity" "sha1-9UnBPHVMxAuHZEufqfCaapX+BzY="
+  "resolved" "https://registry.npm.taobao.org/@babel/runtime/download/@babel/runtime-7.11.2.tgz?cache=0&sync_timestamp=1604441085826&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fruntime%2Fdownload%2F%40babel%2Fruntime-7.11.2.tgz"
+  "version" "7.11.2"
+  dependencies:
+    "regenerator-runtime" "^0.13.4"
+
 "@babel/runtime@7.9.0":
   "integrity" "sha1-M37aZ0AfWwZqbyBaMRPUrBi6SVs="
   "resolved" "https://registry.npm.taobao.org/@babel/runtime/download/@babel/runtime-7.9.0.tgz?cache=0&sync_timestamp=1604441085826&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fruntime%2Fdownload%2F%40babel%2Fruntime-7.9.0.tgz"
@@ -1903,6 +1910,14 @@
     "lodash" "^4.17.15"
     "semver" "^7.3.2"
     "tsutils" "^3.17.1"
+
+"@uiw/react-codemirror@^3.0.2":
+  "integrity" "sha1-RIwDDUcsdh6SZQUQGcHbwday5B4="
+  "resolved" "https://registry.npm.taobao.org/@uiw/react-codemirror/download/@uiw/react-codemirror-3.0.2.tgz"
+  "version" "3.0.2"
+  dependencies:
+    "@babel/runtime" "7.11.2"
+    "codemirror" "5.57.0"
 
 "@webassemblyjs/ast@1.8.5":
   "integrity" "sha1-UbHF/mV2o0lTv0slPfnw1JDZ41k="
@@ -3306,6 +3321,11 @@
     "@types/q" "^1.5.1"
     "chalk" "^2.4.1"
     "q" "^1.1.2"
+
+"codemirror@5.57.0":
+  "integrity" "sha1-0mNlty+Qn10tu2sSCTScodrrLVA="
+  "resolved" "https://registry.npm.taobao.org/codemirror/download/codemirror-5.57.0.tgz?cache=0&sync_timestamp=1611144511561&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcodemirror%2Fdownload%2Fcodemirror-5.57.0.tgz"
+  "version" "5.57.0"
 
 "collection-visit@^1.0.0":
   "integrity" "sha1-S8A3PBZLwykbTTaMgpzxqApZ3KA="
@@ -9659,7 +9679,7 @@
     "prop-types" "^15.6.2"
     "scheduler" "^0.19.1"
 
-"react-dom@^17.0.1":
+"react-dom@^17.0.1", "react-dom@>=16.8.0":
   "integrity" "sha1-HeJWBHTsnw4zQoVmLt5S28VCb8Y="
   "resolved" "https://registry.npm.taobao.org/react-dom/download/react-dom-17.0.1.tgz?cache=0&sync_timestamp=1610380868351&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Freact-dom%2Fdownload%2Freact-dom-17.0.1.tgz"
   "version" "17.0.1"
@@ -9744,7 +9764,7 @@
   dependencies:
     "prop-types" "^15.6.0"
 
-"react@^17.0.1":
+"react@^17.0.1", "react@>=16.8.0":
   "integrity" "sha1-bgYAQWvVdXTj+G2S7bo9kAhyYSc="
   "resolved" "https://registry.npm.taobao.org/react/download/react-17.0.1.tgz?cache=0&sync_timestamp=1610380867900&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Freact%2Fdownload%2Freact-17.0.1.tgz"
   "version" "17.0.1"

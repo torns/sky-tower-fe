@@ -1,99 +1,153 @@
 @import '../../App.less';
 
-
-.page-header {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .register-entrance {
-        margin: 20px 20px;
-        text-align: end;
-    }  
-}
-
-.poster-background {
-    position: absolute;
-    width: 100%;
-    z-index: -1;
-
-    .poster {
-        width: 100%;
-    }
-}
-
-.poster-title {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 810px;
-    background: #000000;
-    opacity: 0.7;
-
-    .poster-qa {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 36px 20px 36px;
-
-        .poster-question {
-            font-size: 36px;
-            font-weight: bold;
-            color: #ffffff;
-        }
-
-        .poster-answer {
-            font-size: 36px;
-            color: #ffffff;
-            margin: 10px;
-        }
-    }
-
-    .poster-detail {
-        margin-top: 10px;
-        margin-bottom: 12px;
-        max-width: 850px;
-        text-indent: 2em;
-        font-size: 16px;
-        color: #ffffff;
-    }
-
-    .poster-login-in {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 56px 0;
-
-        .ant-input {
-            width: 330px;
-            height: 36px;
-            border: unset;
-        }
-
-        .login-in-button {
-            margin: 0 24px;
-        }
-    }
-}
-
 .home-page {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 30px 20px 20px 20px;
-
-    .home-page-affix {
+    .page-header {
+        width: 100%;
         display: flex;
+        justify-content: space-between;
+        align-items: center;
+    
+        .register-entrance {
+            margin: 20px 20px;
+            text-align: end;
+        }  
+    }
+    
+    .poster-background {
+        position: absolute;
+        width: 100%;
+        z-index: -1;
+    
+        .poster {
+            width: 100%;
+        }
+    }
+    
+    .poster-title {
+        display: flex;
+        flex-direction: column;
         justify-content: center;
-        flex-wrap: wrap;
+        align-items: center;
+        height: 810px;
+        background: #000000;
+        opacity: 0.7;
+    
+        .poster-qa {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 36px 20px 36px;
+    
+            .poster-question {
+                font-size: 36px;
+                font-weight: bold;
+                color: #ffffff;
+            }
+    
+            .poster-answer {
+                font-size: 36px;
+                color: #ffffff;
+                margin: 10px;
+            }
+        }
+    
+        .poster-detail {
+            margin-top: 10px;
+            margin-bottom: 12px;
+            max-width: 850px;
+            text-indent: 2em;
+            font-size: 16px;
+            color: #ffffff;
+        }
+    
+        .poster-login-in {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 56px 0;
+    
+            .ant-input {
+                width: 330px;
+                height: 36px;
+                border: unset;
+            }
+    
+            .login-in-button {
+                margin: 0 24px;
+            }
+        }
+    }
+    
+    .home-page-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 30px 20px 20px 20px;
+    
+    
+        .ant-card-bordered {
+           border: unset;
+        }
+    
+        .ant-image-mask {
+            border-radius: 24px;
+        }
+    
+        .small-image-card-container {
+            display: flex;
+            justify-content: space-around;
+        }
+    
+        .image-card-container {
+            flex-direction: column;
+            margin: 56px 80px;
+        }
+    
+        .title {
+            width: 100%;
+            margin: 56px 24px 36px 24px;
+            font-style: large;
+            font-weight: 600;
+            font-size: 22px;
+            color: #0d1a26;
+        }
+    
+        .sub-title {
+            width: 100%;
+            margin: 36px 24px 16px 24px;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 18px;
+            color: #0d1a26;
+        }
+    
+        .title-content {
+            width: 85%;
+            margin: 56px 24px 16px 24px;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 16px;
+            text-indent: 2em;
+            color: #0d1a26;
+        }
+    
+        .content {
+            width: 85%;
+            margin: 16px 24px 16px 24px;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 16px;
+            text-indent: 2em;
+            color: #0d1a26;
+        }
     }
 
-    .home-page-carousel {
-        width: 75%;
-        margin-top: 20px;
+    .feedback-container {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        height: 64px;
     }
 }
