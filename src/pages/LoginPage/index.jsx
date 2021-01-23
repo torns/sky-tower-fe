@@ -95,7 +95,7 @@ class LoginPage extends Component {
       <Form
         {...layout}
         name="basic"
-        initialValues={{ username: decodeURIComponent(username) }}
+        initialValues={{ username: username ? decodeURIComponent(username) : '' }}
         size="large"
         colon={false}
         style={{marginTop: 20}}
@@ -115,7 +115,7 @@ class LoginPage extends Component {
           name="password"
           rules={[{ required: true, message: '请输入密码' }]}
         >
-          <Input.Password allowClear />
+          <Input.Password allowClear visibilityToggle={false} />
         </Form.Item>
 
         <Form.Item {...tailLayout}>
@@ -154,7 +154,7 @@ class LoginPage extends Component {
           name="password"
           rules={[{ required: true, message: '请输入密码' }]}
         >
-          <Input.Password allowClear />
+          <Input.Password allowClear visibilityToggle={false} />
         </Form.Item>
 
         <Form.Item
@@ -177,7 +177,7 @@ class LoginPage extends Component {
             }),
           ]}
         >
-          <Input.Password allowClear />
+          <Input.Password allowClear visibilityToggle={false} />
         </Form.Item>
 
         <Form.Item name="email" label="Email" rules={[{ required: true, type: 'email', message: '请输入正确的邮箱地址' }]}>
@@ -268,7 +268,7 @@ class LoginPage extends Component {
               }),
             ]}
           >
-            <Input.Password allowClear />
+            <Input.Password allowClear visibilityToggle={false}/>
           </Form.Item>
 
           <Form.Item name="email" label="Email" rules={[{ required: true, type: 'email', message: '请输入正确的邮箱地址' }]}>

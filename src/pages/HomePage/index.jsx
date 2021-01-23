@@ -48,6 +48,13 @@ class HomePage extends Component {
     this.reportContent = e.target.value;
   }
 
+  handleCancel = () => {
+    // 以点击遮罩层的方式关闭Modal，不提交反馈
+    this.setState({
+      isModalVisible: false
+    });
+  };
+
   handleSubmitFeedback = (feedback_rate) => {
     console.log(feedback_rate, this.reportContent);
 
@@ -237,6 +244,7 @@ class HomePage extends Component {
           style={{ position: 'absolute', right: 36, top: 575}}
           closable={false}
           visible={isModalVisible}
+          onCancel={this.handleCancel}
         >
           <div className="modal-form">
             <TextArea 
