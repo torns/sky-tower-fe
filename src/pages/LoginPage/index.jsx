@@ -1,5 +1,5 @@
 import React, { Component }  from 'react';
-import { Form, Input, Button, Card, PageHeader, Select } from 'antd';
+import { Form, Input, Button, Card, PageHeader, Select, message } from 'antd';
 import { Link } from "react-router-dom";
 import getQuery from '../../utils/getQuery.js';
 import './index.less';
@@ -30,30 +30,46 @@ class LoginPage extends Component {
   }
 
   onUpdateFinish = values => {
+    const { history } = this.props;
+
     console.log('Success:', values);
+    message.success('账号信息更新成功 😉');
+    
+    history.push('/');
   };
 
   onUpdateFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
+    message.error('似乎还有点问题 🌚');
   }; 
 
   onRegisterFinish = values => {
+    const { history } = this.props;
+
     console.log('Success:', values);
+    message.success('注册成功 😉');
+    
+    history.push('/');
   };
 
   onRegisterFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
+    message.error('似乎还有点问题 🌚');
   }; 
 
   onLoginFinish = values => {
-    const { onLoginSuccess } = this.props;
-    console.log(this.props);
+    const { onLoginSuccess, history } = this.props;
     console.log('Success:', values);
     if (values.username === 'hahaha' && values.password === '20201023') {
-      alert('登陆成功');
-      onLoginSuccess();
+      message.success('登陆成功 😚');
+
+      const user_id = '798123';
+      history.push({
+        pathname: '/profile',
+        search: `?user_id=${user_id}`
+      });
     } else {
-      alert('密码或用户名错误');
+      message.error('密码或用户名错误 🤕');
     }
   };
 
@@ -187,14 +203,22 @@ class LoginPage extends Component {
 
   renderIsUpdate = () => {
     const { onUpdateFinish, onUpdateFinishFailed } = this;
-    const { user_id } = this.query;
+    const { location } = this.props;
+    const { state = {} } = location;
+    const { 
+      user_id,
+      username,
+      password,
+      email,
+      phoneNumber
+    } = state;
 
     return (
       <div>
         <Form
           {...layout}
           name="basic"
-          initialValues={{ remember: true }}
+          initialValues={{ user_id, username, password, email, phone: phoneNumber }}
           size="large"
           colon={false}
           style={{marginTop: 20}}
@@ -213,7 +237,7 @@ class LoginPage extends Component {
             name="username"
             rules={[{ required: true, message: '请输入用户名' }]}
           >
-            <Input allowClear />
+            <Input allowClear defaultValue={username} />
           </Form.Item>
 
           <Form.Item
@@ -221,7 +245,7 @@ class LoginPage extends Component {
             name="password"
             rules={[{ required: true, message: '请输入密码' }]}
           >
-            <Input.Password allowClear />
+            <Input.Password allowClear defaultValue={password} visibilityToggle={false}/>
           </Form.Item>
 
           <Form.Item
@@ -248,7 +272,7 @@ class LoginPage extends Component {
           </Form.Item>
 
           <Form.Item name="email" label="Email" rules={[{ required: true, type: 'email', message: '请输入正确的邮箱地址' }]}>
-            <Input allowClear />
+            <Input allowClear defaultValue={email} />
           </Form.Item>
 
           <Form.Item
@@ -256,7 +280,7 @@ class LoginPage extends Component {
             label="手机号码"
             rules={[{ required: true, message: '请输入您的手机号码' }]}
           >
-            <Input addonBefore={prefixSelector} allowClear style={{ width: '100%' }} />
+            <Input addonBefore={prefixSelector} allowClear style={{ width: '100%' }}  defaultValue={phoneNumber}  />
           </Form.Item>
 
           <Form.Item {...tailLayout}>
@@ -276,7 +300,7 @@ class LoginPage extends Component {
 
     return (
       <div className="login-page">
-        <Link to='/profile'><PageHeader
+        <Link to='/'><PageHeader
           className="login-page-header"
           onBack={() => {}}
           title={title}
