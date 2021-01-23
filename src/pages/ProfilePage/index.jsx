@@ -1,5 +1,5 @@
 import React, { Component }  from 'react';
-import { PageHeader, Card, Image, Descriptions, Button, Modal, Form, Input } from 'antd';
+import { PageHeader, Card, Image, Descriptions, Button, Modal, Form, Input, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { Link } from "react-router-dom";
 import { eventStop } from '../../utils/eventStop';
@@ -18,6 +18,23 @@ const layout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 18 },
 };
+
+// 日期格式化
+Date.prototype.Format = function (fmt) {
+  var o = {
+      "M+": this.getMonth() + 1, //月份 
+      "d+": this.getDate(), //日 
+      "H+": this.getHours(), //小时 
+      "m+": this.getMinutes(), //分 
+      "s+": this.getSeconds(), //秒 
+      "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+      "S": this.getMilliseconds() //毫秒 
+  };
+  if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+  for (var k in o)
+  if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+  return fmt;
+}
 
 class ProfilePage extends Component {
   constructor(props) {
@@ -53,6 +70,7 @@ class ProfilePage extends Component {
         visible: false,
         confirmLoading: false
       })
+      message.success('项目创建成功 🎉');
     }, 2000);
   };
 
@@ -66,15 +84,36 @@ class ProfilePage extends Component {
     const { history } = this.props; 
     history.push({
       pathname: 'detail',
-      search: '?project_id=789123', // 明文传参，URL上带参数
+      search: `?project_id=${project_id}`, // 明文传参，URL上带参数
       query: {
-        project_id: '789123' // Query对象传参，URL上不带参数
+        project_id // Query对象传参，URL上不带参数
       }
     });
   }
 
   render() {
     const { visible, confirmLoading } = this.state;
+
+    const projectList = [
+      {
+        title: '轻天气',
+        project_id: 789329,
+        description: '这是一个开源的轻型的天气预报小程序。',
+        create_time: new Date().Format("yyyy-MM-dd HH:mm:ss")
+      },
+      {
+        title: 'andy的个人博客',
+        project_id: 789347,
+        description: '这个一个由vue构建的个人博客，分享身边遇到的新鲜事。',
+        create_time: new Date().Format("yyyy-MM-dd HH:mm:ss")
+      },
+      {
+        title: '打砖块',
+        project_id: 789348,
+        description: '一个javaScript小游戏',
+        create_time: new Date().Format("yyyy-MM-dd HH:mm:ss")
+      },
+    ];
 
     return (
       <div className="profile-page">
@@ -100,77 +139,28 @@ class ProfilePage extends Component {
                   />
                 </div>
                 <div className="header-info-card-text">
-                  <Card.Meta style={{ marginTop: 20, marginLeft: 20 }} title="我是个小前端" description="项目数: 6" />
+                  <Card.Meta style={{ marginTop: 20, marginLeft: 36 }} title="我是个小前端" description={`项目数: ${projectList.length}`} />
                 </div>
               </div>
             </Card>
             <Card style={{marginTop: 10, borderRadius: 15}}>
-              <Card.Grid style={gridStyle}>
-                <Descriptions
-                  style={{textAlign: 'left'}} 
-                  title="个人页面"
-                  extra={<Button type="primary" onClick={(project_id) => this.handleDetailButtonClick(project_id)}>详情</Button>}
-                >
-                  <Descriptions.Item style={{width: '25%'}} label="项目id">623389</Descriptions.Item>
-                  <Descriptions.Item style={{width: '45%'}} label="项目描述">这是一个react构建的前端项目，个人主页哈哈哈。</Descriptions.Item>
-                  <Descriptions.Item style={{width: '30%'}} label="创建时间">2020年11月23日</Descriptions.Item>
-                </Descriptions>
-              </Card.Grid>
-              <Card.Grid style={gridStyle}>
-                <Descriptions
-                  style={{textAlign: 'left'}} 
-                  title="个人页面"
-                  extra={<Button type="primary">详情</Button>}
-                >
-                  <Descriptions.Item style={{width: '25%'}} label="项目id">623389</Descriptions.Item>
-                  <Descriptions.Item style={{width: '45%'}} label="项目描述">这是一个react构建的前端项目，个人主页哈哈哈。</Descriptions.Item>
-                  <Descriptions.Item style={{width: '30%'}} label="创建时间">2020年11月23日</Descriptions.Item>
-                </Descriptions>
-              </Card.Grid>
-              <Card.Grid style={gridStyle}>
-                <Descriptions
-                  style={{textAlign: 'left'}} 
-                  title="个人页面"
-                  extra={<Button type="primary">详情</Button>}
-                >
-                  <Descriptions.Item style={{width: '25%'}} label="项目id">623389</Descriptions.Item>
-                  <Descriptions.Item style={{width: '45%'}} label="项目描述">这是一个react构建的前端项目，个人主页哈哈哈。</Descriptions.Item>
-                  <Descriptions.Item style={{width: '30%'}} label="创建时间">2020年11月23日</Descriptions.Item>
-                </Descriptions>
-              </Card.Grid>
-              <Card.Grid style={gridStyle}>
-                <Descriptions
-                  style={{textAlign: 'left'}} 
-                  title="个人页面"
-                  extra={<Button type="primary">详情</Button>}
-                >
-                  <Descriptions.Item style={{width: '25%'}} label="项目id">623389</Descriptions.Item>
-                  <Descriptions.Item style={{width: '45%'}} label="项目描述">这是一个react构建的前端项目，个人主页哈哈哈。</Descriptions.Item>
-                  <Descriptions.Item style={{width: '30%'}} label="创建时间">2020年11月23日</Descriptions.Item>
-                </Descriptions>
-              </Card.Grid>
-              <Card.Grid style={gridStyle}>
-                <Descriptions
-                  style={{textAlign: 'left'}} 
-                  title="个人页面"
-                  extra={<Button type="primary">详情</Button>}
-                >
-                  <Descriptions.Item style={{width: '25%'}} label="项目id">623389</Descriptions.Item>
-                  <Descriptions.Item style={{width: '45%'}} label="项目描述">这是一个react构建的前端项目，个人主页哈哈哈。</Descriptions.Item>
-                  <Descriptions.Item style={{width: '30%'}} label="创建时间">2020年11月23日</Descriptions.Item>
-                </Descriptions>
-              </Card.Grid>
-              <Card.Grid style={gridStyle}>
-                <Descriptions
-                  style={{textAlign: 'left'}} 
-                  title="个人页面"
-                  extra={<Button type="primary">详情</Button>}
-                >
-                  <Descriptions.Item style={{width: '25%'}} label="项目id">623389</Descriptions.Item>
-                  <Descriptions.Item style={{width: '45%'}} label="项目描述">这是一个react构建的前端项目，个人主页哈哈哈。</Descriptions.Item>
-                  <Descriptions.Item style={{width: '30%'}} label="创建时间">2020年11月23日</Descriptions.Item>
-                </Descriptions>
-              </Card.Grid>
+              {
+                projectList.map((obj, index) => {
+                  return (
+                    <Card.Grid key={index} style={gridStyle} onClick={() => this.handleDetailButtonClick(obj.project_id)}>
+                      <Descriptions
+                        style={{textAlign: 'left'}} 
+                        title={obj.title}
+                        extra={<Button type="primary">详情</Button>}
+                      >
+                        <Descriptions.Item style={{width: '25%'}} label="项目id">{obj.project_id}</Descriptions.Item>
+                        <Descriptions.Item style={{width: '45%'}} label="项目描述">{obj.description}</Descriptions.Item>
+                        <Descriptions.Item style={{width: '30%'}} label="创建时间">{obj.create_time}</Descriptions.Item>
+                      </Descriptions>
+                    </Card.Grid>
+                  );
+                })
+              }
             </Card>
         </div>
         <Button className="create-new-project-button" type="primary" onClick={this.showModal}>

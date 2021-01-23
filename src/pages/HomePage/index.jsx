@@ -1,5 +1,5 @@
 import React, { Component }  from 'react';
-import { PageHeader, Button, Card, Input, Table, Image, Modal, Rate } from 'antd';
+import { PageHeader, Button, Card, Input, Table, Image, Modal, Rate, message  } from 'antd';
 import { Link } from "react-router-dom";
 import Codeblock from './components/Codeblock/index';
 import { 
@@ -25,8 +25,7 @@ class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLogin: true,
-      isDev: false,
+      isLogin: false,
       usernameForLogin: '',
       isModalVisible: false
     }
@@ -51,16 +50,33 @@ class HomePage extends Component {
 
   handleSubmitFeedback = (feedback_rate) => {
     console.log(feedback_rate, this.reportContent);
+
+    message.success('反馈提交成功，我们将尽快处理 😝');
+
     this.setState({
       isModalVisible: false
     });
   }
 
   renderPageHeader = () => {
+    const { isLogin } = this.state;
     // 注册页面路由
     const registerPath = {
       pathname: '/login',
       search: '?page_type=register'
+    }
+
+    //  修改账号信息页面路由
+    const updatePath = {
+      pathname: '/login',
+      search: '?page_type=update',
+      state: {
+        user_id: '2121',
+        username: 'hahaha',
+        password: '123456',
+        email: 'sdjhs@njdsd.com',
+        phoneNumber: '2387782378'
+      }
     }
 
     return (
@@ -71,15 +87,17 @@ class HomePage extends Component {
           title="SkyTower 前端监控数据中心"
           subTitle="SkyTower front-end monitoring data center"
         />
-        <Link to={registerPath}>
-          <div className="register-entrance" onClick={this.handleClickRegisterLink}>注册</div>
+        <Link to={isLogin ? updatePath : registerPath}>
+          <div className="register-entrance" onClick={this.handleClickRegisterLink}>{
+            isLogin ? '修改账号信息' : '注册'
+          }</div>
         </Link>
       </div>
     );
   }
 
   renderPoster = () => {
-    const { usernameForLogin } = this.state;
+    const { usernameForLogin, isLogin } = this.state;
 
     // 登陆页面路由
     const loginPath = {
@@ -98,19 +116,23 @@ class HomePage extends Component {
             <div className="poster-answer">{posterAnswer}</div>
           </div>
           <div className="poster-detail">{posterDetail}</div>
-          <div className="poster-login-in">
-            <Input placeholder="enter your username to login in" onChange={this.handleLoginInputChange} />
-            <Link to={loginPath}>
-              <Button 
-                className="login-in-button" 
-                type="primary" 
-                shape="round" 
-                size="large"
-              >
-                Login In
-              </Button>
-            </Link>
-          </div>
+          {
+            !isLogin && (
+              <div className="poster-login-in">
+                <Input placeholder="enter your username to login in" onChange={this.handleLoginInputChange} />
+                <Link to={loginPath}>
+                  <Button 
+                    className="login-in-button" 
+                    type="primary" 
+                    shape="round" 
+                    size="large"
+                  >
+                    Login In
+                  </Button>
+                </Link>
+              </div>
+            )
+          }
         </div>
       </div>
     );
