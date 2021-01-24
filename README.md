@@ -11,18 +11,18 @@
     - 初始化前端项目 done 
     - 首页 done 
     - 项目列表页 done 
-    - 项目详情页 开发中... 
-      - 项目详情信息 开发中... 
+    - 项目详情页 done
+      - 项目详情信息 done
       - pv、uv信息 done 
       - 同时在线信息 done 
       - 所有查询条件 done 
-      - 用户行为事件 开发中... 
+      - 用户行为事件 done
       - 计数事件 done 
-      - 请求和响应 开发中... 
-      - Ajax错误率 done... 
-      - 单点追查 done... 
-      - 修改项目信息 done... 
-      - 删除项目 done... 
+      - 请求和响应 done 
+      - Ajax错误率 done
+      - 单点追查 done
+      - 修改项目信息 done
+      - 删除项目 done
     - 注册页 done 
     - 登陆页 done 
     - 账号信息修改页 done 
