@@ -3,10 +3,8 @@ import { Descriptions, Image, Tag } from 'antd';
 import {
   CheckCircleOutlined,
   SyncOutlined,
-  CloseCircleOutlined,
   ExclamationCircleOutlined,
   ClockCircleOutlined,
-  MinusCircleOutlined,
 } from '@ant-design/icons';
 import './index.less';
 
@@ -34,25 +32,6 @@ class ProjectDetailsInfo extends React.Component {
 
     };
   }
-  // is_has_pv_uv
-  // boolean
-  // 是否已经有pv、uv数据上报
-  // is_has_action_event
-  // boolean
-  // 是否已经有actionEvent上报
-  // is_has_count_event
-  // boolean
-  // 是否已经有countEvent上报
-  // is_has_http_event
-  // boolean
-  // 是否已经有httpEvent上报
-  // is_good_project
-  // boolean
-  // 是否是优质项目
-  // is_hot_project
-  // boolean
-  // 是否为热榜项目
-  
 
   render() {
     const data =  {
