@@ -5,6 +5,7 @@ import ProjectDetailsInfo from './components/project-details-info';
 import SimultaneousOnlineInfo from './components/simultaneous-online-info';
 import PvUvInfo from './components/pv-uv-info';
 import AllQueryConditions from './components/all-query-conditions';
+import ActionEvent from './components/action-event';
 import CountEvent from './components/count-event';
 import ReqAndResp from './components/req-and-resp';
 import SinglePointTracing from './components/single-point-tracing';
@@ -46,6 +47,7 @@ class DetailPage extends Component {
       case 'SinglePointTracing': return <SinglePointTracing project_id={this.query.project_id}/>;
       case 'DeleteProject': return <DeleteProject project_id={this.query.project_id}/>;
       case 'ModifyProjectInfo': return <ModifyProjectInfo project_id={this.query.project_id}/>;
+      case 'ActionEvent': return <ActionEvent project_id={this.query.project_id}/>
       case 'CountEvent': return <CountEvent project_id={this.query.project_id}/>;
       case 'ReqAndResp': return <ReqAndResp project_id={this.query.project_id}/>;
       case 'AjaxErrorRate': return <AjaxErrorRate project_id={this.query.project_id}/>;

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form, Input, Button, Select, Tag, Table, Space } from 'antd';
-import './index.less';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import './index.less';
@@ -37,6 +36,23 @@ const reqAndRespOptions = [{
     label: 'resp',
     value: 'cyan'
 }];
+
+// 日期格式化
+Date.prototype.Format = function (fmt) {
+  var o = {
+      "M+": this.getMonth() + 1, //月份 
+      "d+": this.getDate(), //日 
+      "H+": this.getHours(), //小时 
+      "m+": this.getMinutes(), //分 
+      "s+": this.getSeconds(), //秒 
+      "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+      "S": this.getMilliseconds() //毫秒 
+  };
+  if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+  for (var k in o)
+  if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+  return fmt;
+}
 
 class ReqAndResp extends React.Component {
   constructor () {
@@ -194,7 +210,7 @@ class ReqAndResp extends React.Component {
 
     const data = [
       {
-        time: String(new Date()),
+        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
         user_id: '327832',
         api: '/get/user/info',
         type: 'req',
@@ -205,7 +221,7 @@ class ReqAndResp extends React.Component {
         resp: "{errNo: '0', errMessage: 'success', data: '{ username: 'baby123', age: 23, create_time: '2020.01.05' }'}"
       },
       {
-        time: String(new Date()),
+        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
         user_id: '327832',
         api: '/update/user/info',
         type: 'req',
@@ -216,7 +232,7 @@ class ReqAndResp extends React.Component {
         resp: "{errNo: '0', errMessage: 'success', data: '{ status: 'post successful!' }'}"
       },
       {
-        time: String(new Date()),
+        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
         user_id: '327832',
         api: '/get/user/info',
         type: 'req',
@@ -227,7 +243,7 @@ class ReqAndResp extends React.Component {
         resp: "{errNo: '0', errMessage: 'success', data: '{ username: 'baby123', age: 23, create_time: '2020.01.05' }'}"
       },
       {
-        time: String(new Date()),
+        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
         user_id: '327832',
         api: '/update/user/info',
         type: 'req',
@@ -238,7 +254,7 @@ class ReqAndResp extends React.Component {
         resp: "{errNo: '0', errMessage: 'success', data: '{ status: 'post successful!' }'}"
       },
       {
-        time: String(new Date()),
+        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
         user_id: '327832',
         api: '/get/user/info',
         type: 'req',
@@ -249,7 +265,7 @@ class ReqAndResp extends React.Component {
         resp: "{errNo: '0', errMessage: 'success', data: '{ username: 'baby123', age: 23, create_time: '2020.01.05' }'}"
       },
       {
-        time: String(new Date()),
+        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
         user_id: '327832',
         api: '/update/user/info',
         type: 'req',
@@ -260,7 +276,7 @@ class ReqAndResp extends React.Component {
         resp: "{errNo: '0', errMessage: 'success', data: '{ status: 'post successful!' }'}"
       },
       {
-        time: String(new Date()),
+        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
         user_id: '327832',
         api: '/get/user/info',
         type: 'req',
@@ -271,7 +287,7 @@ class ReqAndResp extends React.Component {
         resp: "{errNo: '0', errMessage: 'success', data: '{ username: 'baby123', age: 23, create_time: '2020.01.05' }'}"
       },
       {
-        time: String(new Date()),
+        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
         user_id: '327832',
         api: '/update/user/info',
         type: 'req',
@@ -282,7 +298,7 @@ class ReqAndResp extends React.Component {
         resp: "{errNo: '0', errMessage: 'success', data: '{ status: 'post successful!' }'}"
       },
       {
-        time: String(new Date()),
+        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
         user_id: '327832',
         api: '/get/user/info',
         type: 'req',
@@ -293,7 +309,7 @@ class ReqAndResp extends React.Component {
         resp: "{errNo: '0', errMessage: 'success', data: '{ username: 'baby123', age: 23, create_time: '2020.01.05' }'}"
       },
       {
-        time: String(new Date()),
+        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
         user_id: '327832',
         api: '/update/user/info',
         type: 'req',
@@ -304,7 +320,7 @@ class ReqAndResp extends React.Component {
         resp: "{errNo: '0', errMessage: 'success', data: '{ status: 'post successful!' }'}"
       },
       {
-        time: String(new Date()),
+        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
         user_id: '327832',
         api: '/update/user/info',
         type: 'req',
@@ -315,7 +331,7 @@ class ReqAndResp extends React.Component {
         resp: "{errNo: '0', errMessage: 'success', data: '{ status: 'post successful!' }'}"
       },
       {
-        time: String(new Date()),
+        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
         user_id: '327832',
         api: '/get/user/info',
         type: 'req',
@@ -326,7 +342,7 @@ class ReqAndResp extends React.Component {
         resp: "{errNo: '0', errMessage: 'success', data: '{ username: 'baby123', age: 23, create_time: '2020.01.05' }'}"
       },
       {
-        time: String(new Date()),
+        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
         user_id: '327832',
         api: '/update/user/info',
         type: 'req',
@@ -395,7 +411,6 @@ class ReqAndResp extends React.Component {
           <Table
             columns={columns}
             dataSource={data} 
-            // pagination={false}
             style={{ marginTop: 24, marginBottom: 24 }}
             size="middle"
             scroll={{ x: 1800 }}
