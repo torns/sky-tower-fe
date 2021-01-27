@@ -2,6 +2,7 @@ import React, { Component }  from 'react';
 import { PageHeader, Button, Card, Input, Table, Image, Modal, Rate, message  } from 'antd';
 import { Link } from "react-router-dom";
 import Codeblock from './components/Codeblock/index';
+import reqwest from 'reqwest';
 import { 
   columns, 
   initData, 
@@ -29,6 +30,36 @@ class HomePage extends Component {
       usernameForLogin: '',
       isModalVisible: false
     }
+  }
+
+  componentDidMount () {
+
+    // 判断当前用户是否登陆
+    reqwest({
+      url: "http://localhost:8765/check_permission",
+      method: 'post',
+      type: 'json',
+      crossOrigin: true, /* 跨域请求 */
+      data: {
+        token: localStorage.getItem('skyTowerToken')
+      }
+    }).then((res) => {
+      const { err_no, err_message } = res;
+      
+      if (err_no === 0 && err_message === 'success') {
+        this.setState({
+          isLogin: true
+        })
+      }
+    });
+  }
+
+  handleClickLoginOutButton = () => {
+    // 退出登陆，将token修改为无效token
+    localStorage.setItem('skyTowerToken', 'invalid');
+    this.setState({
+      isLogin: false
+    });
   }
 
   handleLoginInputChange = (e) => {
@@ -124,7 +155,17 @@ class HomePage extends Component {
           </div>
           <div className="poster-detail">{posterDetail}</div>
           {
-            !isLogin && (
+            isLogin ?  (
+              <Button 
+                className="login-out-button" 
+                type="primary" 
+                shape="round" 
+                size="large"
+                onClick={this.handleClickLoginOutButton}
+              >
+                Login out
+              </Button>
+            ) : (
               <div className="poster-login-in">
                 <Input placeholder="enter your username to login in" onChange={this.handleLoginInputChange} />
                 <Link to={loginPath}>
