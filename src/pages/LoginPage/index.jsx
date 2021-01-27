@@ -2,6 +2,7 @@ import React, { Component }  from 'react';
 import { Form, Input, Button, Card, PageHeader, Select, message } from 'antd';
 import { Link } from "react-router-dom";
 import getQuery from '../../utils/getQuery.js';
+import reqwest from 'reqwest';
 import './index.less';
 
 const layout = {
@@ -59,18 +60,37 @@ class LoginPage extends Component {
 
   onLoginFinish = values => {
     const { onLoginSuccess, history } = this.props;
-    console.log('Success:', values);
-    if (values.username === 'hahaha' && values.password === '20201023') {
-      message.success('登陆成功 😚');
 
-      const user_id = '798123';
-      history.push({
-        pathname: '/profile',
-        search: `?user_id=${user_id}`
-      });
-    } else {
-      message.error('密码或用户名错误 🤕');
-    }
+    reqwest({
+      url: "http://localhost:8765/check_permission",
+      method: 'post',
+      type: 'json',
+      crossOrigin: true, /* 跨域请求 */
+      data: {
+        username: values.username,
+        password: values.password,
+        is_login_in: true
+      }
+    }).then((res) => {
+      const { err_no, data } = res;
+      
+      if (err_no === 0) {
+        // 登陆成功，前端保存服务端签发的token，记录用户的登陆状态
+        localStorage.setItem('skyTowerToken', data.token);
+
+        // 全局提示
+        message.success('登陆成功 😚');
+
+        // 跳转到项目列表页
+        history.push({
+          pathname: '/profile',
+          search: `?user_id=${data.user_id}`
+        });
+      } else {
+        // 登陆失败
+        message.error('密码或用户名错误 🤕');
+      }
+    });
   };
 
   onLoginFinishFailed = errorInfo => {

@@ -43,23 +43,23 @@ class App extends Component {
         }   
     });
 
-    emitter.emitCountEvent('test_event');
+    // emitter.emitCountEvent('test_event');
 
-    emitter.emitReqEvent({
-        api: 'xxx/getUserInfo',
-        query: 'user_id=987234&&user_name=secretttt&&user_type=vip'
-    });
+    // emitter.emitReqEvent({
+    //     api: 'xxx/getUserInfo',
+    //     query: 'user_id=987234&&user_name=secretttt&&user_type=vip'
+    // });
 
-    emitter.emitReqEvent({
-        api: 'xxx/updateUserInfo',
-        request_body: '{"user_id": "987234", "user_name": "secretttt", "user_type": "vip"}'
-    });
+    // emitter.emitReqEvent({
+    //     api: 'xxx/updateUserInfo',
+    //     request_body: '{"user_id": "987234", "user_name": "secretttt", "user_type": "vip"}'
+    // });
 
-    emitter.emitRespEvent({
-        api: 'xxx/updateUserInfo',
-        resp: '{"status": 200}',
-        is_success: true
-    });
+    // emitter.emitRespEvent({
+    //     api: 'xxx/updateUserInfo',
+    //     resp: '{"status": 200}',
+    //     is_success: true
+    // });
   }
 
 
