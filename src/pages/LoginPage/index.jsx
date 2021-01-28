@@ -48,6 +48,27 @@ class LoginPage extends Component {
     const { history } = this.props;
 
     console.log('Success:', values);
+
+    reqwest({
+      url: "http://101.200.197.197:8765/create/new_user",
+      method: 'post',
+      type: 'json',
+      crossOrigin: true, /* 跨域请求 */
+      data: {
+        username: values.username,
+        password: values.password,
+        email: values.email,
+        phone_number: values.phone,
+        user_create_time: Number(new Date())
+      }
+    }).then((res) => {
+      const { err_no, data } = res;
+
+      if (err_no === 0) {
+
+      }
+    });
+
     message.success('注册成功 😉');
     
     history.push('/');
