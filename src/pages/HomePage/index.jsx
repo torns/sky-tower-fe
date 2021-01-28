@@ -97,7 +97,7 @@ class HomePage extends Component {
       type: 'json',
       crossOrigin: true, /* 跨域请求 */
       data: {
-        user_id: localStorage.getItem('skyTowerUserId') || 0,
+        user_id: '2382837873287' || 0,
         feedback_rate,
         report_content: this.reportContent,
         create_time: Number(new Date())
@@ -108,7 +108,7 @@ class HomePage extends Component {
       if (err_no === 0 && err_message === 'success') {
         message.success('反馈提交成功，我们将尽快处理 😝');
       } else {
-        message.error('网络异常，反馈提交失败 🤕');
+        message.error(err_message || '网络异常，反馈提交失败 🤕');
       }
 
       this.setState({
