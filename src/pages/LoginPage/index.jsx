@@ -62,7 +62,7 @@ class LoginPage extends Component {
     const { onLoginSuccess, history } = this.props;
 
     reqwest({
-      url: "http://localhost:8765/check_permission",
+      url: "http://101.200.197.197:8765/check_permission",
       method: 'post',
       type: 'json',
       crossOrigin: true, /* 跨域请求 */
