@@ -293,7 +293,7 @@ class HomePage extends Component {
   }
 
   renderFeedbackContainer = () => {
-    const { isModalVisible, feedback_rate } = this.state;
+    const { isModalVisible } = this.state;
 
     return (
       <div className="feedback-container">
