@@ -65,13 +65,13 @@ class LoginPage extends Component {
       const { err_no, data } = res;
 
       if (err_no === 0) {
-
+        message.success('注册成功 😉');
+    
+        history.push('/');
+      } else {
+        message.error('似乎有点问题...');
       }
     });
-
-    message.success('注册成功 😉');
-    
-    history.push('/');
   };
 
   onRegisterFinishFailed = errorInfo => {
