@@ -33,10 +33,29 @@ class LoginPage extends Component {
   onUpdateFinish = values => {
     const { history } = this.props;
 
-    console.log('Success:', values);
-    message.success('账号信息更新成功 😉');
+    reqwest({
+      url: "http://101.200.197.197:8765/update/user_info",
+      method: 'post',
+      type: 'json',
+      crossOrigin: true, /* 跨域请求 */
+      data: {
+        user_id: localStorage.getItem("skyTowerUserId"),
+        username: values.username,
+        password: values.password,
+        email: values.email,
+        phone_number: values.phone,
+      }
+    }).then((res) => {
+      const { err_no } = res;
+
+      if (err_no === 0) {
+        message.success('账号信息更新成功 😉');
     
-    history.push('/');
+        history.push('/');
+      } else {
+        message.error('似乎有点问题...');
+      }
+    });
   };
 
   onUpdateFinishFailed = errorInfo => {
@@ -62,7 +81,7 @@ class LoginPage extends Component {
         user_create_time: Number(new Date())
       }
     }).then((res) => {
-      const { err_no, data } = res;
+      const { err_no } = res;
 
       if (err_no === 0) {
         message.success('注册成功 😉');
