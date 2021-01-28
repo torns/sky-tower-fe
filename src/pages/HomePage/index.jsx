@@ -57,6 +57,7 @@ class HomePage extends Component {
   handleClickLoginOutButton = () => {
     // 退出登陆，将token修改为无效token
     localStorage.setItem('skyTowerToken', 'invalid');
+    localStorage.setItem('skyTowerUserId', 0);
     this.setState({
       isLogin: false
     });
@@ -89,10 +90,30 @@ class HomePage extends Component {
   handleSubmitFeedback = (feedback_rate) => {
     console.log(feedback_rate, this.reportContent);
 
-    message.success('反馈提交成功，我们将尽快处理 😝');
+    // 提交体验反馈
+    reqwest({
+      url: "http://101.200.197.197:8765/report_feedback",
+      method: 'post',
+      type: 'json',
+      crossOrigin: true, /* 跨域请求 */
+      data: {
+        user_id: localStorage.getItem('skyTowerUserId') || 0,
+        feedback_rate,
+        report_content: this.reportContent,
+        create_time: Number(new Date())
+      }
+    }).then((res) => {
+      const { err_no, err_message } = res;
+      
+      if (err_no === 0 && err_message === 'success') {
+        message.success('反馈提交成功，我们将尽快处理 😝');
+      } else {
+        message.error('网络异常，反馈提交失败 🤕');
+      }
 
-    this.setState({
-      isModalVisible: false
+      this.setState({
+        isModalVisible: false
+      });
     });
   }
 
@@ -284,6 +305,7 @@ class HomePage extends Component {
           footer={null}
           style={{ position: 'absolute', right: 36, top: 575}}
           closable={false}
+          destroyOnClose={true}
           visible={isModalVisible}
           onCancel={this.handleCancel}
         >

@@ -77,6 +77,7 @@ class LoginPage extends Component {
       if (err_no === 0) {
         // 登陆成功，前端保存服务端签发的token，记录用户的登陆状态
         localStorage.setItem('skyTowerToken', data.token);
+        localStorage.setItem('skyTowerUserId', data.user_id);
 
         // 全局提示
         message.success('登陆成功 😚');
