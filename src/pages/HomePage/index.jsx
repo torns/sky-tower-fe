@@ -108,7 +108,7 @@ class HomePage extends Component {
       if (err_no === 0 && err_message === 'success') {
         message.success('反馈提交成功，我们将尽快处理 😝');
       } else {
-        message.error('网络异常，反馈提交失败 🤕');
+        message.error(err_message || '网络异常，反馈提交失败 🤕');
       }
 
       this.setState({
