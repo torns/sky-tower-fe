@@ -97,7 +97,7 @@ class HomePage extends Component {
       type: 'json',
       crossOrigin: true, /* 跨域请求 */
       data: {
-        user_id: '2382837873287' || 0,
+        user_id: localStorage.getItem('skyTowerUserId') || 0,
         feedback_rate,
         report_content: this.reportContent,
         create_time: Number(new Date())
