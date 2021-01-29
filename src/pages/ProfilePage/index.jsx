@@ -57,10 +57,8 @@ class ProfilePage extends Component {
   }
 
   componentDidMount () {
-
     this.getUserInfo();
     this.getUserList();
-
   }
 
   getUserInfo = () => {
@@ -123,18 +121,41 @@ class ProfilePage extends Component {
   }
 
   handleOk = () => {
-    console.log(this.modalValueObject);
     this.setState({
       confirmLoading: true
     })
-    setTimeout(() => {
+
+    this.createNewProject(this.modalValueObject);
+  };
+
+  createNewProject = (obj) => {
+    reqwest({
+      url: "http://101.200.197.197:8765/create/new_project",
+      method: 'post',
+      type: 'json',
+      crossOrigin: true, /* 跨域请求 */
+      data: {
+        user_id: this.query.user_id,
+        project_name: obj.project_name,
+        description: obj.description,
+        url_online: obj.url_online,
+        create_time: Number(new Date())
+      }
+    }).then((res) => {
+      const { err_no, err_message } = res;
+
+      if (err_no === 0) {
+        message.success('项目创建成功 🎉');
+        this.getUserList();
+      } else {
+        message.error(err_message || '似乎有点问题...');
+      }
       this.setState({
         visible: false,
         confirmLoading: false
-      })
-      message.success('项目创建成功 🎉');
-    }, 2000);
-  };
+      });
+    });
+  }
 
   handleCancel = () => {
     this.setState({
@@ -232,6 +253,7 @@ class ProfilePage extends Component {
           okText={'创建新项目'}
           cancelText={'取消'}
           closable={false}
+          destroyOnClose={true}
         >
           <Form
             {...layout}
