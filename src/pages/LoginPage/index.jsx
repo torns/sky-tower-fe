@@ -25,7 +25,6 @@ class LoginPage extends Component {
   constructor(props) {
     super(props);
     this.query = getQuery();
-    console.log(this.query);
     this.state = {
     }
   }
@@ -46,14 +45,14 @@ class LoginPage extends Component {
         phone_number: values.phone,
       }
     }).then((res) => {
-      const { err_no } = res;
+      const { err_no, err_message } = res;
 
       if (err_no === 0) {
         message.success('账号信息更新成功 😉');
     
         history.push('/');
       } else {
-        message.error('似乎有点问题...');
+        message.error(err_message || '似乎有点问题...');
       }
     });
   };
@@ -81,14 +80,14 @@ class LoginPage extends Component {
         user_create_time: Number(new Date())
       }
     }).then((res) => {
-      const { err_no } = res;
+      const { err_no, err_message } = res;
 
       if (err_no === 0) {
         message.success('注册成功 😉');
     
         history.push('/');
       } else {
-        message.error('似乎有点问题...');
+        message.error(err_message || '似乎有点问题...');
       }
     });
   };
@@ -269,17 +268,16 @@ class LoginPage extends Component {
     const { 
       user_id,
       username,
-      password,
       email,
       phoneNumber
-    } = state;
+    } = state; // location state
 
     return (
       <div>
         <Form
           {...layout}
           name="basic"
-          initialValues={{ user_id, username, password, email, phone: phoneNumber }}
+          initialValues={{ user_id, username, email, phone: phoneNumber }}
           size="large"
           colon={false}
           style={{marginTop: 20}}
@@ -291,14 +289,14 @@ class LoginPage extends Component {
             name="user_id"
             rules={[{ required: true }]}
           >
-            <Input disabled allowClear defaultValue={user_id} />
+            <Input disabled allowClear defaultValue={user_id || this.query.user_id} />
           </Form.Item>
           <Form.Item
             label="用户名"
             name="username"
             rules={[{ required: true, message: '请输入用户名' }]}
           >
-            <Input allowClear defaultValue={username} />
+            <Input allowClear defaultValue={username || decodeURIComponent(this.query.username)} />
           </Form.Item>
 
           <Form.Item
@@ -306,7 +304,7 @@ class LoginPage extends Component {
             name="password"
             rules={[{ required: true, message: '请输入密码' }]}
           >
-            <Input.Password allowClear defaultValue={password} visibilityToggle={false}/>
+            <Input.Password allowClear visibilityToggle={false}/>
           </Form.Item>
 
           <Form.Item

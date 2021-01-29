@@ -28,7 +28,11 @@ class HomePage extends Component {
     this.state = {
       isLogin: false,
       usernameForLogin: '',
-      isModalVisible: false
+      isModalVisible: false,
+      user_id: '',
+      username: '',
+      email: '',
+      phoneNumber: ''
     }
   }
 
@@ -45,11 +49,29 @@ class HomePage extends Component {
       }
     }).then((res) => {
       const { err_no, err_message } = res;
-      
       if (err_no === 0 && err_message === 'success') {
-        this.setState({
-          isLogin: true
-        })
+        reqwest({
+          url: "http://101.200.197.197:8765/get/user_info",
+          method: 'get',
+          type: 'json',
+          crossOrigin: true, /* 跨域请求 */
+          data: {
+            user_id: localStorage.getItem('skyTowerUserId')
+          }
+        }).then((res) => {
+          const { err_no, err_message, data } = res;
+          const { user_id, username, email, phone_number } = data;
+          
+          if (err_no === 0 && err_message === 'success') {
+            this.setState({
+              isLogin: true,
+              user_id,
+              username,
+              email,
+              phoneNumber: phone_number
+            });
+          }
+        });
       }
     });
   }
@@ -118,7 +140,7 @@ class HomePage extends Component {
   }
 
   renderPageHeader = () => {
-    const { isLogin } = this.state;
+    const { isLogin, user_id, username, phoneNumber, email } = this.state;
     // 注册页面路由
     const registerPath = {
       pathname: '/login',
@@ -128,13 +150,12 @@ class HomePage extends Component {
     //  修改账号信息页面路由
     const updatePath = {
       pathname: '/login',
-      search: '?page_type=update',
+      search: `?page_type=update&user_id=${user_id}&username=${username}`,
       state: {
-        user_id: '2121',
-        username: 'hahaha',
-        password: '123456',
-        email: 'sdjhs@njdsd.com',
-        phoneNumber: '2387782378'
+        user_id,
+        username,
+        email,
+        phoneNumber
       }
     }
 
