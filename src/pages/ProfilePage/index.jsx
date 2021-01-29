@@ -1,8 +1,14 @@
 import React, { Component }  from 'react';
-import { PageHeader, Card, Image, Descriptions, Button, Modal, Form, Input, message } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { PageHeader, Card, Image, Descriptions, Button, Modal, Form, Input, message, Tag } from 'antd';
+import { 
+  PlusOutlined,  
+  SyncOutlined,
+  ExclamationCircleOutlined
+} from '@ant-design/icons';
 import { Link } from "react-router-dom";
+import getQuery from '../../utils/getQuery.js';
 import { eventStop } from '../../utils/eventStop';
+import reqwest from 'reqwest';
 import './index.less'; 
 
 const { TextArea } = Input;
@@ -42,8 +48,64 @@ class ProfilePage extends Component {
     this.state = {
       visible: false,
       confirmLoading: false,
+      username: '',
+      avatar: '',
+      projectList: []
     }
+    this.query = getQuery();
     this.modalValueObject = {};
+  }
+
+  componentDidMount () {
+
+    this.getUserInfo();
+    this.getUserList();
+
+  }
+
+  getUserInfo = () => {
+    reqwest({
+      url: "http://101.200.197.197:8765/get/user_info",
+      method: 'get',
+      type: 'json',
+      crossOrigin: true, /* 跨域请求 */
+      data: {
+        user_id: localStorage.getItem('skyTowerUserId')
+      }
+    }).then((res) => {
+      const { err_no, err_message, data } = res;
+      const { username, avatar } = data;
+      
+      if (err_no === 0 && err_message === 'success') {
+        this.setState({
+          username,
+          avatar
+        });
+      }
+    });
+  }
+
+  getUserList = () => {
+    reqwest({
+      url: "http://101.200.197.197:8765/get/user_list",
+      method: 'get',
+      type: 'json',
+      crossOrigin: true, /* 跨域请求 */
+      data: {
+        user_id: this.query.user_id,
+      }
+    }).then((res) => {
+      const { err_no, err_message, data } = res;
+      const { user_list } = data;
+
+      if (err_no === 0) {
+        this.setState({
+          projectList: user_list
+        })
+      } else {
+        message.error(err_message || '似乎有点问题...');
+      }
+    });
   }
 
   showModal = (e) => {
@@ -92,28 +154,7 @@ class ProfilePage extends Component {
   }
 
   render() {
-    const { visible, confirmLoading } = this.state;
-
-    const projectList = [
-      {
-        title: '轻天气',
-        project_id: 789329,
-        description: '这是一个开源的轻型的天气预报小程序。',
-        create_time: new Date().Format("yyyy-MM-dd HH:mm:ss")
-      },
-      {
-        title: 'andy的个人博客',
-        project_id: 789347,
-        description: '这个一个由vue构建的个人博客，分享身边遇到的新鲜事。',
-        create_time: new Date().Format("yyyy-MM-dd HH:mm:ss")
-      },
-      {
-        title: '打砖块',
-        project_id: 789348,
-        description: '一个javaScript小游戏',
-        create_time: new Date().Format("yyyy-MM-dd HH:mm:ss")
-      },
-    ];
+    const { visible, confirmLoading, projectList, username, avatar } = this.state;
 
     return (
       <div className="profile-page">
@@ -134,12 +175,12 @@ class ProfilePage extends Component {
                     width={100}
                     height={100}
                     style={{margin: 10}}
-                    src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                    src={ avatar || "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"}
                     fallback="data:image/png;base64,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"
                   />
                 </div>
                 <div className="header-info-card-text">
-                  <Card.Meta style={{ marginTop: 20, marginLeft: 36 }} title="我是个小前端" description={`项目数: ${projectList.length}`} />
+                  <Card.Meta style={{ marginTop: 20, marginLeft: 36 }} title={username} description={`项目数: ${projectList.length}`} />
                 </div>
               </div>
             </Card>
@@ -150,12 +191,27 @@ class ProfilePage extends Component {
                     <Card.Grid key={index} style={gridStyle} onClick={() => this.handleDetailButtonClick(obj.project_id)}>
                       <Descriptions
                         style={{textAlign: 'left'}} 
-                        title={obj.title}
-                        extra={<Button type="primary">详情</Button>}
+                        title={obj.project_name}
+                        extra={<Button type="primary" style={{marginTop: 16}}>详情</Button>}
                       >
-                        <Descriptions.Item style={{width: '25%'}} label="项目id">{obj.project_id}</Descriptions.Item>
-                        <Descriptions.Item style={{width: '45%'}} label="项目描述">{obj.description}</Descriptions.Item>
-                        <Descriptions.Item style={{width: '30%'}} label="创建时间">{obj.create_time}</Descriptions.Item>
+                        <Descriptions.Item style={{width: '33%'}} label="项目id 💎 ">{obj.project_id}</Descriptions.Item>
+                        <Descriptions.Item style={{width: '33%'}} label="线上地址 📡 "><a href={obj.url_online}>点击进入</a></Descriptions.Item>
+                        <Descriptions.Item style={{width: '33%'}} label="创建时间 ⌛️ ">{new Date(obj.create_time).Format("yyyy-MM-dd")}</Descriptions.Item>
+                      </Descriptions>
+                      <Descriptions
+                        style={{display: 'flex', justifyContent: 'space-between'}} 
+                      >
+                        <Descriptions.Item style={{width: '66%'}} label="项目描述 🎞 ">{obj.description}</Descriptions.Item>
+                        <Descriptions.Item style={{width: '33%'}} label="监控状态 🔋 ">
+                          {
+                            obj.is_monitoring ? (<Tag icon={<SyncOutlined spin />} color="processing">
+                              监控进行中...
+                            </Tag>) : (<Tag icon={<ExclamationCircleOutlined />} color="error">
+                                已停止监控
+                              </Tag>
+                            )
+                          }
+                        </Descriptions.Item>
                       </Descriptions>
                     </Card.Grid>
                   );
