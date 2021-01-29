@@ -1,5 +1,5 @@
 import React, { Component }  from 'react';
-import { PageHeader, Card, Image, Descriptions, Button, Modal, Form, Input, message, Tag } from 'antd';
+import { PageHeader, Card, Image, Descriptions, Button, Modal, Form, Input, message, Tag, Empty } from 'antd';
 import { 
   PlusOutlined,  
   SyncOutlined,
@@ -207,7 +207,7 @@ class ProfilePage extends Component {
             </Card>
             <Card style={{marginTop: 10, borderRadius: 15}}>
               {
-                projectList.map((obj, index) => {
+                 projectList.length > 0 && projectList.map((obj, index) => {
                   return (
                     <Card.Grid key={index} style={gridStyle} onClick={() => this.handleDetailButtonClick(obj.project_id)}>
                       <Descriptions
@@ -237,6 +237,24 @@ class ProfilePage extends Component {
                     </Card.Grid>
                   );
                 })
+              }
+              {
+                projectList.length == 0 && (
+                  <div className="empty-list-container">
+                    <Empty
+                      image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+                      imageStyle={{
+                        height: 80,
+                      }}
+                      description={
+                        <div className="empty-list-text">
+                          暂无项目<a onClick={this.showModal}>{` 去创建`}</a>
+                        </div>
+                      }
+                    >
+                    </Empty>
+                  </div>
+                )
               }
             </Card>
         </div>

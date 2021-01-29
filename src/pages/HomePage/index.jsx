@@ -177,7 +177,7 @@ class HomePage extends Component {
   }
 
   renderPoster = () => {
-    const { usernameForLogin, isLogin, username } = this.state;
+    const { usernameForLogin, isLogin } = this.state;
 
     // 登陆页面路由
     const loginPath = {
@@ -205,7 +205,7 @@ class HomePage extends Component {
                     shape="round" 
                     size="large"
                   >
-                    {`进入 ${username} 的项目 🥳`}
+                    {`查看我的监控数据 🥳`}
                   </Button>
                 </Link>
                 <div
