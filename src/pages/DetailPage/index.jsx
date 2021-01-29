@@ -61,7 +61,7 @@ class DetailPage extends Component {
 
     return (
       <div className="detail-page">
-        <Link to='/profile'><PageHeader
+        <Link to={`/profile?user_id=${localStorage.getItem('skyTowerUserId')}`}><PageHeader
           className="detail-page-header"
           onBack={() => {}}
           title={'项目详情页'}

@@ -177,7 +177,7 @@ class HomePage extends Component {
   }
 
   renderPoster = () => {
-    const { usernameForLogin, isLogin } = this.state;
+    const { usernameForLogin, isLogin, username } = this.state;
 
     // 登陆页面路由
     const loginPath = {
@@ -198,15 +198,23 @@ class HomePage extends Component {
           <div className="poster-detail">{posterDetail}</div>
           {
             isLogin ?  (
-              <Button 
-                className="login-out-button" 
-                type="primary" 
-                shape="round" 
-                size="large"
-                onClick={this.handleClickLoginOutButton}
-              >
-                Login out
-              </Button>
+              <div className="entry-area">
+                <Link to={`/profile?user_id=${localStorage.getItem('skyTowerUserId')}`}>
+                  <Button 
+                    type="primary" 
+                    shape="round" 
+                    size="large"
+                  >
+                    {`进入 ${username} 的项目 🥳`}
+                  </Button>
+                </Link>
+                <div
+                  className="login-out-block"
+                  onClick={this.handleClickLoginOutButton}
+                >
+                  <a>退出登陆</a>
+                </div>
+              </div>
             ) : (
               <div className="poster-login-in">
                 <Input placeholder="enter your username to login in" onChange={this.handleLoginInputChange} />
