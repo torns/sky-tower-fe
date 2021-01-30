@@ -69,9 +69,9 @@ class DetailPage extends Component {
         /></Link>
         <Card
           hoverable
-          style={{ width: '95%', marginTop: 20, marginBottom: 56 }}
+          style={{ width: '97%', marginTop: 16, marginBottom: 80, borderRadius: 24 }}
         >
-          { !isPhone && <Sider handleActiveTabChange={this.handleActiveTabChange} /> }
+          { !isPhone && <Sider handleActiveTabChange={this.handleActiveTabChange} style={{borderRadius: 24}}/> }
           { isPhone && <Dropdown overlay={menuOnPhone}>
             <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
                { `导航  `} <DownOutlined />
