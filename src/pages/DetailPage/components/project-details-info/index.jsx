@@ -119,7 +119,7 @@ class ProjectDetailsInfo extends React.Component {
             }
           </div>
           {
-            data.is_monitoring && (<div className="data-status">
+            data.is_monitoring === 1 && (<div className="data-status">
                 <Tag 
                   icon={ data.is_has_pv_uv ? <CheckCircleOutlined /> : <ClockCircleOutlined /> } 
                   color={ data.is_has_pv_uv ? 'success' : 'default'} >
