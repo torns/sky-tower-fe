@@ -13,10 +13,17 @@ import './index.less';
 
 const { TextArea } = Input;
 
+const firstGridStyle = {
+  width: '100%',
+  textAlign: 'center',
+  marginTop: 0,
+  borderRadius: 15
+};
+
 const gridStyle = {
   width: '100%',
   textAlign: 'center',
-  marginBottom: 5,
+  marginTop: 5,
   borderRadius: 15
 };
 
@@ -205,11 +212,11 @@ class ProfilePage extends Component {
                 </div>
               </div>
             </Card>
-            <Card style={{marginTop: 10, borderRadius: 15}}>
+            <Card style={{marginTop: 10, borderRadius: 15, marginBottom: 36}}>
               {
                  projectList.length > 0 && projectList.map((obj, index) => {
                   return (
-                    <Card.Grid key={index} style={gridStyle} onClick={() => this.handleDetailButtonClick(obj.project_id)}>
+                    <Card.Grid key={index} style={index === 0 ? firstGridStyle : gridStyle} onClick={() => this.handleDetailButtonClick(obj.project_id)}>
                       <Descriptions
                         style={{textAlign: 'left'}} 
                         title={obj.project_name}
