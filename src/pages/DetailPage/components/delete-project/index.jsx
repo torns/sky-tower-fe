@@ -52,7 +52,7 @@ class DeleteProject extends React.Component {
       crossOrigin: true, /* 跨域请求 */
       data: {
         token: localStorage.getItem("skyTowerToken"),
-        user_id: 10088800 || localStorage.getItem("skyTowerUserId"),
+        user_id: localStorage.getItem("skyTowerUserId"),
         project_id: this.query.project_id,
       }
     }).then((res) => {
