@@ -1,5 +1,7 @@
 import React from 'react';
-import { Switch, Button, Form, Input } from 'antd';
+import { Switch, Button, Form, Input, message } from 'antd';
+import getQuery from '../../../../utils/getQuery.js';
+import reqwest from 'reqwest';
 import './index.less';
 
 const { TextArea } = Input;
@@ -9,23 +11,49 @@ const layout = {
   wrapperCol: { span: 17 },
 };
 
+// 重新加载
+function handleRetry (props) {
+  if (props.handleReload && typeof props.handleReload === 'function') {
+      props.handleReload();
+  } else {
+      window.location.reload();
+  }
+}
+
 class ModifyProjectInfo extends React.Component {
   constructor () {
     super();
     this.state = {
-      disabled: true
+      disabled: true,
+      formValueObject: {}
     };
-    // 表单初始值
-    this.formValueObject = {
-      description: "我的个人博客～",
-      project_name: "个人博客主页",
-      url_online: "www.demo.com"
-    };
+    this.query = getQuery();
   }
 
   componentDidMount () {
-    const { project_id } = this.props;
-    console.log(project_id);
+    reqwest({
+      url: "http://101.200.197.197:8765/get/project_detail",
+      method: 'get',
+      type: 'json',
+      crossOrigin: true, /* 跨域请求 */
+      data: {
+        project_id: this.query.project_id,
+        token: localStorage.getItem('skyTowerToken')
+      }
+    }).then((res) => {
+      const { err_no, err_message, data } = res;
+      if (err_no === 0) {
+        this.setState({
+          formValueObject: {
+            description: data.description,
+            project_name: data.project_name,
+            url_online: data.url_online
+          }
+        })
+      } else {
+        message.error(err_message || '似乎还有点问题...');
+      }
+    });
   }
 
   toggle = () => {
@@ -39,15 +67,40 @@ class ModifyProjectInfo extends React.Component {
     if (!changeValue) {
       return;
     }
-    this.formValueObject = allValue;
+    this.setState({
+      formValueObject: allValue
+    });
   }
 
-  handleClickButton = () => {
-    console.log(this.formValueObject);
+  handleClickButton = () => {  
+    const { formValueObject } = this.state;
+    reqwest({
+      url: "http://101.200.197.197:8765/update/project_info",
+      method: 'post',
+      type: 'json',
+      crossOrigin: true, /* 跨域请求 */
+      data: {
+        token: localStorage.getItem("skyTowerToken"),
+        user_id: localStorage.getItem("skyTowerUserId"),
+        project_id: this.query.project_id,
+        ...formValueObject
+      }
+    }).then((res) => {
+      const { err_no, err_message } = res;
+
+      if (err_no === 0) {
+        message.success('项目信息更新成功 🤪');
+        window.setTimeout(() => {
+          handleRetry(this.props);
+        }, 100);
+      } else {
+        message.error(err_message || '似乎有点问题...');
+      }
+    });
   }
 
   render() {
-    const { disabled } = this.state;
+    const { disabled, formValueObject } = this.state;
 
     return (
       <div className="modify-project-info">
@@ -69,7 +122,7 @@ class ModifyProjectInfo extends React.Component {
                 colon={false}
                 style={{marginTop: 30}}
                 onValuesChange={this.handleFormValueChange}
-                initialValues={this.formValueObject}
+                initialValues={formValueObject}
               >
                 <Form.Item
                   label="项目名称"
