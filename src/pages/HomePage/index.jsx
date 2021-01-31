@@ -40,7 +40,7 @@ class HomePage extends Component {
 
     // 判断当前用户是否登陆
     reqwest({
-      url: "http://101.200.197.197:8765/check_permission",
+      url: `${window.requestUrl}/check_permission`,
       method: 'post',
       type: 'json',
       crossOrigin: true, /* 跨域请求 */
@@ -51,7 +51,7 @@ class HomePage extends Component {
       const { err_no, err_message } = res;
       if (err_no === 0 && err_message === 'success') {
         reqwest({
-          url: "http://101.200.197.197:8765/get/user_info",
+          url: `${window.requestUrl}/get/user_info`,
           method: 'get',
           type: 'json',
           crossOrigin: true, /* 跨域请求 */
@@ -114,7 +114,7 @@ class HomePage extends Component {
 
     // 提交体验反馈
     reqwest({
-      url: "http://101.200.197.197:8765/report_feedback",
+      url: `${window.requestUrl}/report_feedback`,
       method: 'post',
       type: 'json',
       crossOrigin: true, /* 跨域请求 */

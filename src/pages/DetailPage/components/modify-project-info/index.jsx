@@ -32,7 +32,7 @@ class ModifyProjectInfo extends React.Component {
 
   componentDidMount () {
     reqwest({
-      url: "http://101.200.197.197:8765/get/project_detail",
+      url: `${window.requestUrl}/get/project_detail`,
       method: 'get',
       type: 'json',
       crossOrigin: true, /* 跨域请求 */
@@ -75,7 +75,7 @@ class ModifyProjectInfo extends React.Component {
   handleClickButton = () => {  
     const { formValueObject } = this.state;
     reqwest({
-      url: "http://101.200.197.197:8765/update/project_info",
+      url: `${window.requestUrl}/update/project_info`,
       method: 'post',
       type: 'json',
       crossOrigin: true, /* 跨域请求 */

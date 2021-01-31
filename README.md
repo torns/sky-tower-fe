@@ -51,6 +51,8 @@
 - 调试内测版本页面
   - 内测版本页面URL拼接规则：在UrlQuery上初始化use_env_tag=1和env=dev参数即可命中内测版页面，例如内测版本的项目列表页: http://localhost:9998/?use_env_tag=1&env=dev&/#/profile
   - 测试阶段需要先发布在内测版本页面，ready后再发布到正式版本页面
+- 接口请求代理到本地服务
+  - 用server字段控制，在App.jsx中修改。当server = 'localhostServer'时，请求本地接口。当server = 'SkyTowerServer'时，请求线上接口。默认情况下请求线上接口。
 
 ## 发布新feature到内测版本
 ```js
