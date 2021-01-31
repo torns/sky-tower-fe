@@ -33,7 +33,7 @@ class LoginPage extends Component {
     const { history } = this.props;
 
     reqwest({
-      url: "http://101.200.197.197:8765/update/user_info",
+      url: `${window.requestUrl}/update/user_info`,
       method: 'post',
       type: 'json',
       crossOrigin: true, /* 跨域请求 */
@@ -68,7 +68,7 @@ class LoginPage extends Component {
     console.log('Success:', values);
 
     reqwest({
-      url: "http://101.200.197.197:8765/create/new_user",
+      url: `${window.requestUrl}/create/new_user`,
       method: 'post',
       type: 'json',
       crossOrigin: true, /* 跨域请求 */
@@ -101,7 +101,7 @@ class LoginPage extends Component {
     const { onLoginSuccess, history } = this.props;
 
     reqwest({
-      url: "http://101.200.197.197:8765/check_permission",
+      url: `${window.requestUrl}/check_permission`,
       method: 'post',
       type: 'json',
       crossOrigin: true, /* 跨域请求 */

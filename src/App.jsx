@@ -16,6 +16,14 @@ if (vConsole) {
   console.log('SkyTower前端监控数据中心 内测版', vConsole, env);
 }
 
+// 网络请求host
+// const server = 'localhostServer';
+const server = 'SkyTowerServer';
+window.requestUrl = 'http://101.200.197.197:8765';
+if (server === 'localhostServer') {
+  window.requestUrl = 'http://localhost:8765';
+}
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -25,8 +33,8 @@ class App extends Component {
 
   componentDidMount() {
     init({
-      pid: '00001',
-      uid: '789123654'
+      pid: '100113',
+      uid: '0'
     });
 
     emitter.emitActionEvent({
@@ -43,23 +51,30 @@ class App extends Component {
         }   
     });
 
-    // emitter.emitCountEvent('test_event');
+    for (let i = 0; i < 17; i++) {
+      emitter.emitCountEvent('open_app');
+      emitter.emitCountEvent('get_current_location');
+    }
 
-    // emitter.emitReqEvent({
-    //     api: 'xxx/getUserInfo',
-    //     query: 'user_id=987234&&user_name=secretttt&&user_type=vip'
-    // });
+    for (let i = 0; i < 5; i++) {
+      emitter.emitCountEvent('select_city');
+    }
 
-    // emitter.emitReqEvent({
-    //     api: 'xxx/updateUserInfo',
-    //     request_body: '{"user_id": "987234", "user_name": "secretttt", "user_type": "vip"}'
-    // });
+    emitter.emitReqEvent({
+        api: 'xxx/getUserInfo',
+        query: 'user_id=987234&&user_name=secretttt&&user_type=vip'
+    });
 
-    // emitter.emitRespEvent({
-    //     api: 'xxx/updateUserInfo',
-    //     resp: '{"status": 200}',
-    //     is_success: true
-    // });
+    emitter.emitReqEvent({
+        api: 'xxx/updateUserInfo',
+        request_body: '{"user_id": "987234", "user_name": "secretttt", "user_type": "vip"}'
+    });
+
+    emitter.emitRespEvent({
+        api: 'xxx/updateUserInfo',
+        resp: '{"status": 200}',
+        is_success: true
+    });
   }
 
 

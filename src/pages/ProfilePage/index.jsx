@@ -70,7 +70,7 @@ class ProfilePage extends Component {
 
   getUserInfo = () => {
     reqwest({
-      url: "http://101.200.197.197:8765/get/user_info",
+      url: `${window.requestUrl}/get/user_info`,
       method: 'get',
       type: 'json',
       crossOrigin: true, /* 跨域请求 */
@@ -92,7 +92,7 @@ class ProfilePage extends Component {
 
   getUserList = () => {
     reqwest({
-      url: "http://101.200.197.197:8765/get/user_list",
+      url: `${window.requestUrl}/get/user_list`,
       method: 'get',
       type: 'json',
       crossOrigin: true, /* 跨域请求 */
@@ -137,7 +137,7 @@ class ProfilePage extends Component {
 
   createNewProject = (obj) => {
     reqwest({
-      url: "http://101.200.197.197:8765/create/new_project",
+      url: `${window.requestUrl}/create/new_project`,
       method: 'post',
       type: 'json',
       crossOrigin: true, /* 跨域请求 */

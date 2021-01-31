@@ -1,9 +1,10 @@
 import React from 'react';
-import { Space, DatePicker, Table, Input, Button } from 'antd';
+import { Space, DatePicker, Table, Input, Button, message } from 'antd';
 import { Chart, Geom, Axis, Tooltip, Coord } from 'bizcharts';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
-import numeral from 'numeral';
+import getQuery from '../../../../utils/getQuery';
+import reqwest from 'reqwest';
 import './index.less';
 
 const { RangePicker } = DatePicker;
@@ -12,29 +13,59 @@ class CountEvent extends React.Component {
   constructor () {
     super();
     this.state = {
-      
+      countEventData: []
     };
+    this.query = getQuery();
   }
 
   componentDidMount () {
-    const { project_id } = this.props;
-    console.log(project_id);
+    this.getCountEventList({});
+  }
+
+  getCountEventList = (obj) => {
+    reqwest({
+      url: `${window.requestUrl}/get/list/count_event`,
+      method: 'get',
+      type: 'json',
+      crossOrigin: true, /* 跨域请求 */
+      data: {
+        user_id: localStorage.getItem('skyTowerUserId'),
+        project_id: this.query.project_id,
+        start_time: obj.start_time || 0,
+        end_time: obj.end_time || 0,
+        token: localStorage.getItem('skyTowerToken')
+      }
+    }).then((res) => {
+      const { err_no, err_message, data } = res;
+      if (err_no === 0) {
+        this.setState({
+          countEventData: data.data
+        })
+      } else {
+        message.error(err_message || '似乎还有点问题...');
+      }
+    });
   }
 
   handleDatePickerChange = (moment, dateString) => {
-    console.log(Number(moment[0]), dateString[0]);
-    console.log(Number(moment[1]), dateString[1]);
+    this.getCountEventList({
+      start_time: Number(moment[0]),
+      end_time: Number(moment[1])
+    });
   }
 
   getBarData = (countEventData) => {
     let data = [];
-    Object.keys(countEventData).map((event, index) => {
-      const temp = {
-        event,
-        count: countEventData[event]
-      }
-      data.push(temp);
-    });
+
+    if (Array.isArray(countEventData)) {
+      countEventData.map((event, index) => {
+        const temp = {
+          event: Object.keys(event)[0],
+          count: Object.values(event)[0]
+        }
+        data.push(temp);
+      });
+    }
     return data;
   }
 
@@ -104,13 +135,8 @@ class CountEvent extends React.Component {
   };
 
   render() {
-    const countEventData = {
-      'image_upload': 130,
-      'image_upload_success': 116,
-      'image_upload_no_permission': 5,
-      'image_upload_net_error': 9
-    };
-
+    const { countEventData } = this.state;
+    
     const columns = [
       {
         title: `事件名 event`,
