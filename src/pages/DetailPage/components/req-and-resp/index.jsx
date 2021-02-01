@@ -1,7 +1,9 @@
 import React from 'react';
-import { Form, Input, Button, Select, Tag, Table, Space } from 'antd';
+import { Form, Input, Button, Select, Tag, Table, Space, message } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
+import getQuery from '../../../../utils/getQuery';
+import reqwest from 'reqwest';
 import './index.less';
 
 const layout = {
@@ -58,13 +60,56 @@ class ReqAndResp extends React.Component {
   constructor () {
     super();
     this.state = {
-
+      data: []
     };
+    this.query = getQuery();
   }
 
   componentDidMount () {
-    const { project_id } = this.props;
-    console.log(project_id);
+    this.getHttpEventList({});
+  }
+  
+  getTypeParam = (array) => {
+    if (Array.isArray(array) && array.length === 1) {
+      return array[0] === 'lime' ? 'req' : array[0] === 'cyan' ? 'resp' : '';
+    } 
+    return '';
+  }
+
+  getIsSuccessParam = (array) => {
+    // 约定is_success = 2 表示既包含成功又包含失败请求
+    if (Array.isArray(array) && array.length === 1) {
+      return array[0] === 'gold' ? 0 : array[0] === 'green' ? 1 : 2;
+    }
+    return 2;
+  }
+
+  getHttpEventList = (obj) => {
+    reqwest({
+      url: `${window.requestUrl}/get/list/http_event`,
+      method: 'get',
+      type: 'json',
+      crossOrigin: true, /* 跨域请求 */
+      data: {
+        user_id: localStorage.getItem('skyTowerUserId'),
+        project_id: this.query.project_id,
+        uid: obj.user_id,
+        api: obj.api,
+        type: this.getTypeParam(obj.reqAndResp),
+        is_success: this.getIsSuccessParam(obj.successAndError),
+        token: localStorage.getItem('skyTowerToken')
+      }
+    }).then((res) => {
+      const { err_no, err_message, data } = res;
+      if (err_no === 0) {
+        this.setState({
+          data: data.data
+        });
+        message.success('数据获取成功～ 😚');
+      } else {
+        message.error(err_message || '似乎还有点问题...');
+      }
+    });
   }
 
   getColumnSearchProps = dataIndex => ({
@@ -133,8 +178,7 @@ class ReqAndResp extends React.Component {
   };
 
   onFinish = (values) => {
-    // 注意 label 和 value 的映射
-    console.log('Success:', values);
+    this.getHttpEventList(values);
   };
 
   onFinishFailed = (errorInfo) => {
@@ -152,6 +196,8 @@ class ReqAndResp extends React.Component {
   } 
 
   render() {
+    const { data = [] } = this.state;
+
     const columns = [
       {
         title: `用户user_id`,
@@ -180,7 +226,7 @@ class ReqAndResp extends React.Component {
         dataIndex: 'query',
         key: 'query',
         ...this.getColumnSearchProps('query'),
-        width: 200,
+        width: 50,
       },
       {
         title: `post请求参数request_body`,
@@ -188,7 +234,7 @@ class ReqAndResp extends React.Component {
         key: 'request_body',
         ...this.getColumnSearchProps('request_body'),
         render: text => <a>{text}</a>,
-        width: 200,
+        width: 50,
       },
       {
         title: `返回值resp`,
@@ -196,162 +242,17 @@ class ReqAndResp extends React.Component {
         key: 'resp',
         ...this.getColumnSearchProps('resp'),
         render: text => <a>{text}</a>,
-        width: 200,
+        width: 50,
       },
       {
         title: `时间time`,
         dataIndex: 'time',
         key: 'time',
         ...this.getColumnSearchProps('time'),
+        render: text => <a>{new Date(Number(text)).Format("yyyy-MM-dd HH:mm:ss")}</a>,
         width: 50,
-        fixed: 'right'
+        fixed: 'right',
       }
-    ];
-
-    const data = [
-      {
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        user_id: '327832',
-        api: '/get/user/info',
-        type: 'req',
-        is_success: true,
-        is_error: false,
-        query: '?user_id=3232324',
-        request_body: '',
-        resp: "{errNo: '0', errMessage: 'success', data: '{ username: 'baby123', age: 23, create_time: '2020.01.05' }'}"
-      },
-      {
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        user_id: '327832',
-        api: '/update/user/info',
-        type: 'req',
-        is_success: true,
-        is_error: false,
-        query: '',
-        request_body: "{ username: 'bob_aha', age: 24, status: '今天又是元气满满的一天。', email: '23788732@qq.com'}",
-        resp: "{errNo: '0', errMessage: 'success', data: '{ status: 'post successful!' }'}"
-      },
-      {
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        user_id: '327832',
-        api: '/get/user/info',
-        type: 'req',
-        is_success: true,
-        is_error: false,
-        query: '?user_id=3232324',
-        request_body: '',
-        resp: "{errNo: '0', errMessage: 'success', data: '{ username: 'baby123', age: 23, create_time: '2020.01.05' }'}"
-      },
-      {
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        user_id: '327832',
-        api: '/update/user/info',
-        type: 'req',
-        is_success: true,
-        is_error: false,
-        query: '',
-        request_body: "{ username: 'bob_aha', age: 24, status: '今天又是元气满满的一天。', email: '23788732@qq.com'}",
-        resp: "{errNo: '0', errMessage: 'success', data: '{ status: 'post successful!' }'}"
-      },
-      {
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        user_id: '327832',
-        api: '/get/user/info',
-        type: 'req',
-        is_success: true,
-        is_error: false,
-        query: '?user_id=3232324',
-        request_body: '',
-        resp: "{errNo: '0', errMessage: 'success', data: '{ username: 'baby123', age: 23, create_time: '2020.01.05' }'}"
-      },
-      {
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        user_id: '327832',
-        api: '/update/user/info',
-        type: 'req',
-        is_success: true,
-        is_error: false,
-        query: '',
-        request_body: "{ username: 'bob_aha', age: 24, status: '今天又是元气满满的一天。', email: '23788732@qq.com'}",
-        resp: "{errNo: '0', errMessage: 'success', data: '{ status: 'post successful!' }'}"
-      },
-      {
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        user_id: '327832',
-        api: '/get/user/info',
-        type: 'req',
-        is_success: true,
-        is_error: false,
-        query: '?user_id=3232324',
-        request_body: '',
-        resp: "{errNo: '0', errMessage: 'success', data: '{ username: 'baby123', age: 23, create_time: '2020.01.05' }'}"
-      },
-      {
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        user_id: '327832',
-        api: '/update/user/info',
-        type: 'req',
-        is_success: true,
-        is_error: false,
-        query: '',
-        request_body: "{ username: 'bob_aha', age: 24, status: '今天又是元气满满的一天。', email: '23788732@qq.com'}",
-        resp: "{errNo: '0', errMessage: 'success', data: '{ status: 'post successful!' }'}"
-      },
-      {
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        user_id: '327832',
-        api: '/get/user/info',
-        type: 'req',
-        is_success: true,
-        is_error: false,
-        query: '?user_id=3232324',
-        request_body: '',
-        resp: "{errNo: '0', errMessage: 'success', data: '{ username: 'baby123', age: 23, create_time: '2020.01.05' }'}"
-      },
-      {
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        user_id: '327832',
-        api: '/update/user/info',
-        type: 'req',
-        is_success: true,
-        is_error: false,
-        query: '',
-        request_body: "{ username: 'bob_aha', age: 24, status: '今天又是元气满满的一天。', email: '23788732@qq.com'}",
-        resp: "{errNo: '0', errMessage: 'success', data: '{ status: 'post successful!' }'}"
-      },
-      {
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        user_id: '327832',
-        api: '/update/user/info',
-        type: 'req',
-        is_success: true,
-        is_error: false,
-        query: '',
-        request_body: "{ username: 'bob_aha', age: 24, status: '今天又是元气满满的一天。', email: '23788732@qq.com'}",
-        resp: "{errNo: '0', errMessage: 'success', data: '{ status: 'post successful!' }'}"
-      },
-      {
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        user_id: '327832',
-        api: '/get/user/info',
-        type: 'req',
-        is_success: true,
-        is_error: false,
-        query: '?user_id=3232324',
-        request_body: '',
-        resp: "{errNo: '0', errMessage: 'success', data: '{ username: 'baby123', age: 23, create_time: '2020.01.05' }'}"
-      },
-      {
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        user_id: '327832',
-        api: '/update/user/info',
-        type: 'req',
-        is_success: true,
-        is_error: false,
-        query: '',
-        request_body: "{ username: 'bob_aha', age: 24, status: '今天又是元气满满的一天。', email: '23788732@qq.com'}",
-        resp: "{errNo: '0', errMessage: 'success', data: '{ status: 'post successful!' }'}"
-      },
     ];
 
     return (
