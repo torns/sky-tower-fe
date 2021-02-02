@@ -334,7 +334,7 @@ class ActionEvent extends React.Component {
                 </Form.Item>
               </div>
               <Form.Item>
-                  <Button type="primary" htmlType="submit" onClick={this.onSubmit}>
+                  <Button type="primary" htmlType="submit">
                       按条件过滤
                   </Button>
               </Form.Item>
