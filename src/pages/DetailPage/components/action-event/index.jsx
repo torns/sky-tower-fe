@@ -1,7 +1,9 @@
 import React from 'react';
-import { DatePicker, Form, Input, Button, Select, Table, Space, Badge } from 'antd';
+import { DatePicker, Form, Input, Button, Select, Table, Space, Badge, message } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
+import getQuery from '../../../../utils/getQuery';
+import reqwest from 'reqwest';
 import './index.less';
 
 const { RangePicker } = DatePicker;
@@ -34,7 +36,7 @@ const getNetTypeIcon = (netType) => {
     case '4G': return  <Badge status="processing" />;
     case 'none': return <Badge status="error" />;
     case 'unknown':  return <Badge status="default" />;
-    default: return  <Badge status="warning" />;
+    default: return  "";
   }
 } 
 
@@ -59,8 +61,47 @@ class ActionEvent extends React.Component {
   constructor () {
     super();
     this.state = {
-
+      data: []
     };
+    this.query = getQuery();
+  }
+
+  componentDidMount () {
+    this.getActionEvent({});
+  }
+
+  getActionEvent = (obj) => {
+    reqwest({
+      url: `${window.requestUrl}/get/list/action_event`,
+      method: 'get',
+      type: 'json',
+      crossOrigin: true, /* 跨域请求 */
+      data: {
+        user_id: localStorage.getItem("skyTowerUserId"),
+        project_id: this.query.project_id,
+        start_time: obj.date ? Number(obj.date[0]) : Number(new Date().getTime()) - 1000*60*60*24, // 不填就默认前一天
+        end_time: obj.date ? Number(obj.date[1]) : Number(new Date().getTime()),
+        event: obj.event,
+        location: obj.location,
+        device_brand: obj.device_brand,
+        app_version: obj.app_version,
+        system_version: obj.system_version,
+        client: obj.client && obj.client.join(","),
+        net_type: obj.net_type && obj.net_type.join(","),
+        ip_address: obj.ip_address,
+        token: localStorage.getItem("skyTowerToken")
+      }
+    }).then((res) => {
+      const { err_no, err_message, data } = res;
+      if (err_no === 0) {
+        this.setState({
+          data: data.data
+        });
+        message.success('数据获取成功～ 😉');
+      } else {
+        message.error(err_message || '似乎还有点问题...');
+      }
+    });
   }
 
   getColumnSearchProps = dataIndex => ({
@@ -129,10 +170,7 @@ class ActionEvent extends React.Component {
   };
 
   onFinish = (values) => {
-    // 注意 label 和 value 的映射
-    console.log('Success:', values);
-    console.log(Number(values.date[0]));
-    console.log(Number(values.date[1]));
+    this.getActionEvent(values);
   };
 
   onFinishFailed = (errorInfo) => {
@@ -184,7 +222,7 @@ class ActionEvent extends React.Component {
         dataIndex: 'client',
         key: 'client',
         ...this.getColumnSearchProps('client'),
-        render: text => <div>{text === 'iOS' ? '📱': '🤖'}{text}</div>,
+        render: text => <div>{text === 'iOS' ? '📱': text === 'Android' ? '🤖' : ''}{text}</div>,
         width: 100,
       },
       {
@@ -222,169 +260,13 @@ class ActionEvent extends React.Component {
         dataIndex: 'time',
         key: 'time',
         ...this.getColumnSearchProps('time'),
+        render: text => <a>{new Date(Number(text)).Format("yyyy-MM-dd HH:mm:ss")}</a>,
         width: 100,
         fixed: 'right'
       }
     ];
-    
-    const data = [
-      {
-        event: 'click_bottom_button',
-        location: '北京市海淀区',
-        device_brand: 'iPhone 11',
-        app_version: '8.0.4',
-        system_version: 'iOS 13.6',
-        client: 'iOS',
-        net_type: '4G',
-        ip_address: '102.200.197.192',
-        extra: "{userType: 'vip', userAccount: 125}",
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        uid: '987123'
-      },
-      {
-        event: 'image_upload',
-        location: '北京市西城区',
-        device_brand: 'hawei p30',
-        app_version: '8.0.3',
-        system_version: 'Android 9.0',
-        client: 'Android',
-        net_type: 'wifi',
-        ip_address: '102.203.197.192',
-        extra: "{userType: 'normal', userAccount: 125}",
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        uid: '987163'
-      },
-      {
-        event: 'click_bottom_button',
-        location: '长沙市雨花石区',
-        device_brand: 'iPhone 7',
-        app_version: '8.0.0',
-        system_version: 'iOS 10',
-        client: 'iOS',
-        net_type: 'none',
-        ip_address: '102.200.197.192',
-        extra: "{userType: 'undefined', userAccount: 0}",
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        uid: '987103'
-      },
-      {
-        event: 'image_upload_error',
-        location: '南宁市江南区',
-        device_brand: 'vivo unknown',
-        app_version: '8.0.3',
-        system_version: 'Android 4.4',
-        client: 'Android',
-        net_type: '3G',
-        ip_address: '102.203.197.190',
-        extra: "{userType: 'normal', userAccount: 0.5}",
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        uid: '987160'
-      },
-      {
-        event: 'click_bottom_button',
-        location: '北京市海淀区',
-        device_brand: 'iPhone 11',
-        app_version: '8.0.4',
-        system_version: 'iOS 13.6',
-        client: 'iOS',
-        net_type: '4G',
-        ip_address: '102.200.197.192',
-        extra: "{userType: 'vip', userAccount: 125}",
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        uid: '987123'
-      },
-      {
-        event: 'image_upload',
-        location: '北京市西城区',
-        device_brand: 'hawei p30',
-        app_version: '8.0.3',
-        system_version: 'Android 9.0',
-        client: 'Android',
-        net_type: 'wifi',
-        ip_address: '102.203.197.192',
-        extra: "{userType: 'normal', userAccount: 125}",
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        uid: '987163'
-      },
-      {
-        event: 'click_bottom_button',
-        location: '长沙市雨花石区',
-        device_brand: 'iPhone 7',
-        app_version: '8.0.0',
-        system_version: 'iOS 10',
-        client: 'iOS',
-        net_type: 'none',
-        ip_address: '102.200.197.192',
-        extra: "{userType: 'undefined', userAccount: 0}",
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        uid: '987103'
-      },
-      {
-        event: 'image_upload_error',
-        location: '南宁市江南区',
-        device_brand: 'vivo unknown',
-        app_version: '8.0.3',
-        system_version: 'Android 4.4',
-        client: 'Android',
-        net_type: '3G',
-        ip_address: '102.203.197.190',
-        extra: "{userType: 'normal', userAccount: 0.5}",
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        uid: '987160'
-      },
-      {
-        event: 'click_bottom_button',
-        location: '北京市海淀区',
-        device_brand: 'iPhone 11',
-        app_version: '8.0.4',
-        system_version: 'iOS 13.6',
-        client: 'iOS',
-        net_type: '4G',
-        ip_address: '102.200.197.192',
-        extra: "{userType: 'vip', userAccount: 125}",
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        uid: '987123'
-      },
-      {
-        event: 'image_upload',
-        location: '北京市西城区',
-        device_brand: 'hawei p30',
-        app_version: '8.0.3',
-        system_version: 'Android 9.0',
-        client: 'Android',
-        net_type: 'wifi',
-        ip_address: '102.203.197.192',
-        extra: "{userType: 'normal', userAccount: 125}",
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        uid: '987163'
-      },
-      {
-        event: 'click_bottom_button',
-        location: '长沙市雨花石区',
-        device_brand: 'iPhone 7',
-        app_version: '8.0.0',
-        system_version: 'iOS 10',
-        client: 'iOS',
-        net_type: 'none',
-        ip_address: '102.200.197.192',
-        extra: "{userType: 'undefined', userAccount: 0}",
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        uid: '987103'
-      },
-      {
-        event: 'image_upload_error',
-        location: '南宁市江南区',
-        device_brand: 'vivo unknown',
-        app_version: '8.0.3',
-        system_version: 'Android 4.4',
-        client: 'Android',
-        net_type: '3G',
-        ip_address: '102.203.197.190',
-        extra: "{userType: 'normal', userAccount: 0.5}",
-        time: new Date().Format("yyyy-MM-dd HH:mm:ss"),
-        uid: '987160'
-      }
-    ];
+  
+    const { data } = this.state;
 
     return (
       <div className="action-event">
@@ -452,7 +334,7 @@ class ActionEvent extends React.Component {
                 </Form.Item>
               </div>
               <Form.Item>
-                  <Button type="primary" htmlType="submit">
+                  <Button type="primary" htmlType="submit" onClick={this.onSubmit}>
                       按条件过滤
                   </Button>
               </Form.Item>
