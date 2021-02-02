@@ -7,6 +7,7 @@ import DetailPage from './pages/DetailPage';
 import VConsole from 'vconsole/dist/vconsole.min';
 import { init, emitter } from 'sky-tower';
 import getEnv from './utils/getEnv.js';
+// import reqwest from 'reqwest';
 import './App.less';
 
 // 只有内测版的SkyTower才外露vConsole
@@ -36,6 +37,34 @@ class App extends Component {
       pid: '100113',
       uid: '0'
     });
+
+
+    // for (let i = 0; i < 10; i++) {
+    //   reqwest({
+    //     url: "http://localhost:8765/emit/action_event",
+    //     method: 'post',
+    //     type: 'json',
+    //     crossOrigin: true, /* 跨域请求 */
+    //     withCredentials: false, /* 值为false，表示前端向服务端发请求时不带cookie */
+    //     data: {
+    //       type: 'action',
+    //       time: new Date().getTime(),
+    //       pid: 100129,
+    //       uid: 10088888,
+    //       event: 'image_upload',
+    //       location: '南宁市江南区',
+    //       device_brand: 'iPhone 11',
+    //       app_version: '8.3.5',
+    //       system_version: '9.2.0',
+    //       client: 'iOS',
+    //       net_type: 'wifi',
+    //       ip_address: '10.102.168.250',
+    //       extra: JSON.stringify({
+    //           env: 'dev'
+    //       })   
+    //     }
+    //   });
+    // }
 
     emitter.emitActionEvent({
         event: 'click_bottom_button',
