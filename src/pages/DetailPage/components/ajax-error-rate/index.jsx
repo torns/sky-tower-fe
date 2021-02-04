@@ -18,8 +18,42 @@ class AjaxErrorRate extends React.Component {
     console.log(Number(moment[1]), dateString[1]);
   }
 
+  getListData = (originalData) => {
+    let data = [];
+
+    if (Array.isArray(originalData)) {
+      originalData.map((event, index) => {
+        const temp = {
+          api: Object.keys(event)[0],
+          ajaxStatus: Object.values(event)[0]
+        }
+        data.push(temp);
+      });
+    }
+    return data;
+  }
+
   render() {
-    const pc = 87;
+    const mockData = [
+      {
+          "xxx/getUserInfo": {
+              "success_count": "870",
+              "error_count": "130",
+              "ajax_error_rate": "0.13",
+          },
+      },
+      {
+           "xxx/getProjectInfo": {
+              "success_count": "800",
+              "error_count": "200",
+              "ajax_error_rate": "0.20",
+          }
+      }
+  ];
+
+  const data = this.getListData(mockData);
+
+  const pc = 1;
 
     return (
       <div className="ajax-error-rate">
