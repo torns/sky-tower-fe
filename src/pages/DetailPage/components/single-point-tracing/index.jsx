@@ -48,8 +48,7 @@ class SinglePointTracing extends React.Component {
   }
 
   componentDidMount () {
-    const { project_id } = this.props;
-    console.log(project_id);
+    this.onSearch();
   }
 
   onSearch = value => {
@@ -128,6 +127,7 @@ class SinglePointTracing extends React.Component {
             Array.isArray(data) && data.map((value, index) => {
               return (
                 <div className="react-json-container" key={index}>
+                  <div className="react-json-info">
                   {
                     value.type === 'resp' ? value.is_success ? 
                       <Alert 
@@ -147,7 +147,10 @@ class SinglePointTracing extends React.Component {
                       />
 
                   }
-                  <ReactJson src={value} />
+                  </div>
+                  <div className="react-json">
+                    <ReactJson src={value} />
+                  </div>
                 </div>
               );
             })
