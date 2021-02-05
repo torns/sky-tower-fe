@@ -1,5 +1,15 @@
 import React from 'react';
-import { DatePicker, Space, Progress } from 'antd';
+import { DatePicker, Space } from 'antd';
+import {
+  Chart,
+  Point,
+  Line,
+	Axis,
+  Area,
+  Tooltip,
+  Coordinate
+} from 'bizcharts';
+import DataSet from '@antv/data-set';
 import './index.less';
 
 const { RangePicker } = DatePicker;
@@ -24,8 +34,9 @@ class AjaxErrorRate extends React.Component {
     if (Array.isArray(originalData)) {
       originalData.map((event, index) => {
         const temp = {
-          api: Object.keys(event)[0],
-          ajaxStatus: Object.values(event)[0]
+          item: Object.keys(event)[0],
+          'Ajax请求成功率': ((1 - Object.values(event)[0].ajax_error_rate) * 100),
+          'Ajax错误率': ((Object.values(event)[0].ajax_error_rate) * 100)
         }
         data.push(temp);
       });
@@ -48,12 +59,47 @@ class AjaxErrorRate extends React.Component {
               "error_count": "200",
               "ajax_error_rate": "0.20",
           }
+      },
+      {
+        "xxx/getUserList": {
+            "success_count": "870",
+            "error_count": "130",
+            "ajax_error_rate": "0.13",
+        },
+      },
+      {
+          "xxx/getProjectList": {
+              "success_count": "800",
+              "error_count": "200",
+              "ajax_error_rate": "0.20",
+          }
+      },
+      {
+        "xxx/postFeedback": {
+            "success_count": "870",
+            "error_count": "130",
+            "ajax_error_rate": "0.25",
+        },
+      },
+      {
+          "xxx/postAnswer": {
+              "success_count": "800",
+              "error_count": "200",
+              "ajax_error_rate": "0.30",
+          }
       }
   ];
 
   const data = this.getListData(mockData);
 
-  const pc = 1;
+  const { DataView } = DataSet;
+  const dv = new DataView().source(data);
+  dv.transform({
+    type: 'fold',
+    fields: ['Ajax请求成功率', 'Ajax错误率'], // 展开字段集
+    key: 'user', // key字段
+    value: 'score', // value字段
+  });
 
     return (
       <div className="ajax-error-rate">
@@ -65,33 +111,44 @@ class AjaxErrorRate extends React.Component {
             <RangePicker showTime onChange={this.handleDatePickerChange}/>
           </Space>
         </div>
-        <div className="progress-container">
-          {
-              pc === 100 && <Progress type="circle" percent={100} />
-          }
-          {
-              pc === 0 && <Progress type="circle" percent={100} status="exception" />
-          }
-          {
-              (pc !== 100 && pc !== 0) && (<div>
-                <Progress type="circle" percent={pc} style={{ margin: 36 }} />
-                <Progress type="circle" percent={100-pc} style={{ margin: 36 }} strokeColor="#ff4d4f" />
-              </div>)
-          }
-        </div>
-        <div className="result-text">
-          {
-            pc === 100 && <div style={{ color: '#52c41a' }}>Ajax 错误率为 0 🎉</div>
-          }
-          {
-            pc === 0 && <div style={{ color: '#cf1322' }}>Ajax错误率为100%，您的服务已告警 ❌</div>
-          }
-          {
-            (pc < 100 && pc >= 70) && <div style={{ color: '#1890ff' }}>{`Ajax错误率为${100-pc}%`}</div>
-          }
-          {
-            (pc < 70 && pc > 0) && <div style={{ color: '#faad14' }}>{`Ajax错误率为${100-pc}%，您的服务已告警！`}</div>
-          }
+        <div className="result-container">
+          <Chart
+            height={500}
+            data={dv.rows}
+            autoFit
+            scale={{
+              score:{
+                min: 0,
+                max: 100,
+              }
+            }}
+            interactions={['legend-highlight']}
+          >
+            <Coordinate type="polar" radius={0.8} />
+            <Tooltip shared />
+            <Point
+              position="item*score"
+              color="user"
+              shape="circle"
+            />
+            <Line
+              position="item*score"
+              color="user"
+              size="2"
+            />
+            <Area
+              position="item*score"
+              color="user"
+            />
+            {
+              // 棱角和圆形，默认圆形
+            }
+            <Axis name="score" grid={{ line: {type: 'line'}}} />
+            {
+              // 不需要轴的最外圈
+            }
+            <Axis name="item" line={false} />
+          </Chart> 
         </div>
       </div>
     );
