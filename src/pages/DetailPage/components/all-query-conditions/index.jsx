@@ -1,8 +1,10 @@
 import React from 'react';
-import { Collapse, Select, Table, Input, Button, Space } from 'antd';
+import { Collapse, Select, Table, Input, Button, Space, message } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import { ACTION } from '../../const/const';
+import getQuery from '../../../../utils/getQuery';
+import reqwest from 'reqwest';
 import './index.less';
 
 const { Panel } = Collapse;
@@ -15,7 +17,33 @@ class AllQueryConditions extends React.Component {
       expandIconPosition: 'right',
       searchText: '',
       searchedColumn: '',
+      data: []
     };
+    this.query = getQuery();
+  }
+
+  componentDidMount () {
+    reqwest({
+      url: `${window.requestUrl}/get/filter/action_event`,
+      method: 'get',
+      type: 'json',
+      crossOrigin: true, /* 跨域请求 */
+      data: {
+        user_id: localStorage.getItem("skyTowerUserId"),
+        project_id: this.query.project_id,
+        token: localStorage.getItem("skyTowerToken")
+      }
+    }).then((res) => {
+      const { err_no, err_message, data } = res;
+      if (err_no === 0) {
+        message.success('数据获取成功～ 😉');
+        this.setState({
+          data: data.data
+        });
+      } else {
+        message.error(err_message || '似乎还有点问题...');
+      }
+    });
   }
 
   onPositionChange = expandIconPosition => {
@@ -32,12 +60,14 @@ class AllQueryConditions extends React.Component {
 
   getTableData = (obj) => {
     let result = [];
-    Object.keys(obj).map((key, index) => {
-      const temp = {
-        key,
-        value: obj[key]
-      }
-      result.push(temp);
+    Object.values(obj).map((valueObj, i) => {
+      Object.keys(valueObj).map((key, j) => {
+        const temp = {
+          key: key || "未上报",
+          value: valueObj[key]
+        }
+        result.push(temp);
+      })
     });
     return result;
   }
@@ -108,7 +138,8 @@ class AllQueryConditions extends React.Component {
   };
 
   render() {
-    const { expandIconPosition } = this.state;
+    const { expandIconPosition, data = [] } = this.state;
+
     const columns = [
       {
         title: 'key',
@@ -125,24 +156,6 @@ class AllQueryConditions extends React.Component {
         style: { marginLeft: 50 }
       }
     ];
-    const mockData = {
-      "event": {
-          "click_tab": "12",
-          "click_poster": "8",
-          "click_buttom": "27",
-          "login in": '36',
-          "login out": '23' 
-      },
-      "location": {
-        "北京市海淀区": "25",
-        "西安市高新区": "3",
-      },
-      "device_brand": {
-        "huawei": "1",
-        "MI 9": "2",
-        "iPhone 11": "1" 
-      },
-    }
 
     return (
       <div className="all-query-conditions">
@@ -156,13 +169,12 @@ class AllQueryConditions extends React.Component {
             expandIconPosition={expandIconPosition}
             ghost
           >
-            {Object.keys(mockData).map((obj, index) => {
-              console.log(obj, mockData[obj]);
+            {Array.isArray(data) && data.map((obj, index) => {
               return (
-                <Panel header={this.getPanelHeaderTitle(obj)} key={index}>
+                <Panel header={this.getPanelHeaderTitle(Object.keys(obj)[0])} key={index}>
                   <Table
                     columns={columns}
-                    dataSource={this.getTableData(mockData[obj])} 
+                    dataSource={this.getTableData(obj)} 
                     pagination={false}
                     size="middle"
                   />
