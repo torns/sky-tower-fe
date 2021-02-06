@@ -93,7 +93,7 @@ class SinglePointTracing extends React.Component {
   onCheckBoxChange = (e) => {
     this.setState({
       isOnlyGetHttpInfo: e.target.checked
-    })
+    });
   }
 
   render() {
@@ -157,7 +157,7 @@ class SinglePointTracing extends React.Component {
           }
         </div>
         <BackTop>
-          <div style={style}>Top ⬆️</div>
+          <div style={style}>回到顶部</div>
         </BackTop>
       </div>
     );
