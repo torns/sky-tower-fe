@@ -48,9 +48,11 @@ class CountEvent extends React.Component {
   }
 
   handleDatePickerChange = (moment, dateString) => {
+    const isArray = Array.isArray(moment);
+
     this.getCountEventList({
-      start_time: Number(moment[0]),
-      end_time: Number(moment[1])
+      start_time: isArray && Number(moment[0]),
+      end_time: isArray && Number(moment[1])
     });
   }
 
