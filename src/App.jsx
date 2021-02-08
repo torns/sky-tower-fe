@@ -17,8 +17,8 @@ if (vConsole) {
 }
 
 // 网络请求host
-// const server = 'localhostServer';
-const server = 'SkyTowerServer';
+const server = 'localhostServer';
+// const server = 'SkyTowerServer';
 window.requestUrl = 'http://101.200.197.197:8765';
 if (server === 'localhostServer') {
   window.requestUrl = 'http://localhost:8765';

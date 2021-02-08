@@ -1,5 +1,5 @@
 import React from 'react';
-import { DatePicker, Space } from 'antd';
+import { DatePicker, Space, message } from 'antd';
 import {
   Chart,
   Point,
@@ -10,6 +10,8 @@ import {
   Coordinate
 } from 'bizcharts';
 import DataSet from '@antv/data-set';
+import getQuery from '../../../../utils/getQuery';
+import reqwest from 'reqwest';
 import './index.less';
 
 const { RangePicker } = DatePicker;
@@ -19,13 +21,48 @@ class AjaxErrorRate extends React.Component {
   constructor () {
     super();
     this.state = {
-
+      data: []
     };
+    this.query = getQuery();
+  }
+
+  componentDidMount () {
+    this.getAjaxErrorRate({});
+  }
+
+  getAjaxErrorRate = (obj) => {
+    reqwest({
+      url: `${window.requestUrl}/get/rate/ajax_error`,
+      method: 'get',
+      type: 'json',
+      crossOrigin: true, /* 跨域请求 */
+      data: {
+        user_id: localStorage.getItem("skyTowerUserId"),
+        project_id: this.query.project_id,
+        start_time: obj.start_time || 0,
+        end_time: obj.end_time || 0,
+        token: localStorage.getItem("skyTowerToken")
+      }
+    }).then((res) => {
+      const { err_no, err_message, data } = res;
+      if (err_no === 0) {
+        message.success('数据获取成功～ 😉');
+        this.setState({
+          data: data.data
+        })
+      } else {
+        message.error(err_message || '似乎还有点问题...');
+      }
+    });
   }
 
   handleDatePickerChange = (moment, dateString) => {
-    console.log(Number(moment[0]), dateString[0]);
-    console.log(Number(moment[1]), dateString[1]);
+    const isArray = Array.isArray(moment);
+    
+    this.getAjaxErrorRate({
+      start_time: isArray && Number(moment[0]),
+      end_time: isArray && Number(moment[1])
+    });
   }
 
   getListData = (originalData) => {
@@ -45,61 +82,18 @@ class AjaxErrorRate extends React.Component {
   }
 
   render() {
-    const mockData = [
-      {
-          "xxx/getUserInfo": {
-              "success_count": "870",
-              "error_count": "130",
-              "ajax_error_rate": "0.13",
-          },
-      },
-      {
-           "xxx/getProjectInfo": {
-              "success_count": "800",
-              "error_count": "200",
-              "ajax_error_rate": "0.20",
-          }
-      },
-      {
-        "xxx/getUserList": {
-            "success_count": "870",
-            "error_count": "130",
-            "ajax_error_rate": "0.13",
-        },
-      },
-      {
-          "xxx/getProjectList": {
-              "success_count": "800",
-              "error_count": "200",
-              "ajax_error_rate": "0.20",
-          }
-      },
-      {
-        "xxx/postFeedback": {
-            "success_count": "870",
-            "error_count": "130",
-            "ajax_error_rate": "0.25",
-        },
-      },
-      {
-          "xxx/postAnswer": {
-              "success_count": "800",
-              "error_count": "200",
-              "ajax_error_rate": "0.30",
-          }
-      }
-  ];
+    const { data: respData } = this.state;
 
-  const data = this.getListData(mockData);
+    const data = this.getListData(respData);
 
-  const { DataView } = DataSet;
-  const dv = new DataView().source(data);
-  dv.transform({
-    type: 'fold',
-    fields: ['Ajax请求成功率', 'Ajax错误率'], // 展开字段集
-    key: 'user', // key字段
-    value: 'score', // value字段
-  });
+    const { DataView } = DataSet;
+    const dv = new DataView().source(data);
+    dv.transform({
+      type: 'fold',
+      fields: ['Ajax请求成功率', 'Ajax错误率'], // 展开字段集
+      key: 'user', // key字段
+      value: 'score', // value字段
+    });
 
     return (
       <div className="ajax-error-rate">
