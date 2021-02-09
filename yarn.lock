@@ -10846,10 +10846,10 @@
   "resolved" "https://registry.npm.taobao.org/sisteransi/download/sisteransi-1.0.5.tgz"
   "version" "1.0.5"
 
-"sky-tower@^1.0.0":
-  "integrity" "sha1-mHq+lW8BY6vR49KKcvnpR6s7mRg="
-  "resolved" "https://registry.npm.taobao.org/sky-tower/download/sky-tower-1.0.0.tgz"
-  "version" "1.0.0"
+"sky-tower@^2.0.0":
+  "integrity" "sha512-2PSc1qKWL9bWcGs1Gn7AIxGEMWwNbYUNjX6gCtLjrAMnDEUFWtQgYgqeJVvRzzem4w2JCxd1Ka2iYjxeaXL4Iw=="
+  "resolved" "https://registry.npmjs.org/sky-tower/-/sky-tower-2.0.0.tgz"
+  "version" "2.0.0"
   dependencies:
     "reqwest" "^2.0.5"
 
