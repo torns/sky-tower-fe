@@ -8,6 +8,7 @@ import {
 import { Link } from "react-router-dom";
 import getQuery from '../../utils/getQuery.js';
 import { eventStop } from '../../utils/eventStop';
+import LoadingPage from '../../components/loading-page';
 import reqwest from 'reqwest';
 import './index.less'; 
 
@@ -57,7 +58,8 @@ class ProfilePage extends Component {
       confirmLoading: false,
       username: '',
       avatar: '',
-      projectList: []
+      projectList: [],
+      loading: true
     }
     this.query = getQuery();
     this.modalValueObject = {};
@@ -84,7 +86,8 @@ class ProfilePage extends Component {
       if (err_no === 0 && err_message === 'success') {
         this.setState({
           username,
-          avatar
+          avatar,
+          loading: false
         });
       }
     });
@@ -182,7 +185,7 @@ class ProfilePage extends Component {
   }
 
   render() {
-    const { visible, confirmLoading, projectList, username, avatar } = this.state;
+    const { visible, confirmLoading, projectList, username, avatar, loading } = this.state;
 
     return (
       <div className="profile-page">
@@ -213,8 +216,9 @@ class ProfilePage extends Component {
               </div>
             </Card>
             <Card style={{marginTop: 10, borderRadius: 15, marginBottom: 36}}>
+              { loading && <LoadingPage /> }
               {
-                 projectList.length > 0 && projectList.map((obj, index) => {
+                 !loading && projectList.length > 0 && projectList.map((obj, index) => {
                   return (
                     <Card.Grid key={index} style={index === 0 ? firstGridStyle : gridStyle} onClick={() => this.handleDetailButtonClick(obj.project_id)}>
                       <Descriptions
