@@ -1,18 +1,11 @@
 import React from 'react';
-import { Statistic, Row, Col, DatePicker, Space, Table, Radio } from 'antd';
+import { Statistic, Row, Col, DatePicker, Space, Table, Radio, message } from 'antd';
 import PvUvChart from '../pv-uv-chart';
+import getQuery from '../../../../utils/getQuery';
+import reqwest from 'reqwest';
 import './index.less';
 
 const { RangePicker } = DatePicker;
-
-const pvUvInfoByTimeData = [
-  {
-    key: '0',
-    name: 'pvUvInfoByTime',
-    pv: 123233,
-    uv: 32636
-  }
-];
 
 const pvUvInfoByTimeColumns = [
   {
@@ -35,8 +28,9 @@ class PvUvInfo extends React.Component {
   constructor () {
     super();
     this.state = {
-
+      pvUvByTime: {}
     };
+    this.query = getQuery();
   }
 
   componentDidMount () {
@@ -45,8 +39,32 @@ class PvUvInfo extends React.Component {
   }
 
   handleDatePickerChange = (moment, dateString) => {
-    console.log(Number(moment[0]), dateString[0]);
-    console.log(Number(moment[1]), dateString[1]);
+    reqwest({
+      url: `${window.requestUrl}/get/by_time/pv_uv`,
+      method: 'get',
+      type: 'json',
+      crossOrigin: true, /* 跨域请求 */
+      data: {
+        user_id: localStorage.getItem('skyTowerUserId'),
+        project_id: this.query.project_id,
+        start_time: Array.isArray(moment) && Number(moment[0]),
+        end_time: Array.isArray(moment) && Number(moment[1]),
+        token: localStorage.getItem('skyTowerToken')
+      }
+    }).then((res) => {
+      const { err_no, err_message, data } = res;
+      const { pv = 0, uv = 0 } = data;
+      if (err_no === 0) {
+        this.setState({
+          pvUvByTime: {
+            pv,
+            uv
+          }
+        });
+      } else {
+        message.error(err_message || '似乎还有点问题...');
+      }
+    });
   }
 
   handleRadioChange = (e, v) => {
@@ -54,6 +72,16 @@ class PvUvInfo extends React.Component {
   }
 
   render() {
+    const { pvUvByTime } = this.state;
+
+    const pvUvInfoByTimeData = [
+      {
+        key: '0',
+        name: 'pvUvInfoByTime',
+        pv: pvUvByTime.pv,
+        uv: pvUvByTime.uv
+      }
+    ];
 
     return (
       <div className="pv-uv-info">
@@ -85,12 +113,12 @@ class PvUvInfo extends React.Component {
         <div className="title">
           某时间段内pv、uv查询
         </div>
-        <div className="pv-uv-table">
+        <div className="pv-uv-date-picker">
           <Space direction="vertical" size={12}>
             <RangePicker showTime onChange={this.handleDatePickerChange}/>
           </Space>
         </div>
-        <div>
+        <div className="pv-uv-table">
           <Table columns={pvUvInfoByTimeColumns} dataSource={pvUvInfoByTimeData} pagination={false} />
         </div>
       </div>
