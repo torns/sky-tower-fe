@@ -28,14 +28,16 @@ class PvUvInfo extends React.Component {
   constructor () {
     super();
     this.state = {
+      all_pv: 0,
+      all_uv: 0,
+      pvUvChart: [],
       pvUvByTime: {}
     };
     this.query = getQuery();
   }
 
   componentDidMount () {
-    const { project_id } = this.props;
-    console.log(project_id);
+    this.getPvUvInfo();
   }
 
   handleDatePickerChange = (moment, dateString) => {
@@ -68,11 +70,40 @@ class PvUvInfo extends React.Component {
   }
 
   handleRadioChange = (e, v) => {
-    console.log(e.target.value);
+    this.getPvUvInfo({
+      type: e.target.value
+    })
+  }
+
+  getPvUvInfo = (obj = {}) => {
+    reqwest({
+      url: `${window.requestUrl}/get/info/pv_uv`,
+      method: 'get',
+      type: 'json',
+      crossOrigin: true, /* 跨域请求 */
+      data: {
+        user_id: localStorage.getItem('skyTowerUserId'),
+        project_id: this.query.project_id,
+        type: obj.type || 'last week',
+        token: localStorage.getItem('skyTowerToken')
+      }
+    }).then((res) => {
+      const { err_no, err_message, data } = res;
+      const { all_pv, all_uv } = data;
+      if (err_no === 0) {
+        this.setState({
+          all_pv,
+          all_uv,
+          pvUvChart: data.data
+        })
+      } else {
+        message.error(err_message || '似乎还有点问题...');
+      }
+    });
   }
 
   render() {
-    const { pvUvByTime } = this.state;
+    const { all_pv, all_uv, pvUvChart, pvUvByTime } = this.state;
 
     const pvUvInfoByTimeData = [
       {
@@ -91,10 +122,10 @@ class PvUvInfo extends React.Component {
         <div className="all-pv-uv-info">
           <Row gutter={24}>
             <Col span={50}>
-              <Statistic title="Page View (pv)" value={1128923000} />
+              <Statistic title="Page View (pv)" value={all_pv} />
             </Col>
             <Col span={50}>
-              <Statistic title="Unique visitor (uv)" value={667858323232} />
+              <Statistic title="Unique visitor (uv)" value={all_uv} />
             </Col>
           </Row>
         </div>
@@ -102,13 +133,13 @@ class PvUvInfo extends React.Component {
           项目近期的 pv、uv 曲线
         </div>
         <div className="pv-uv-chart">
-          <Radio.Group defaultValue="last_week" buttonStyle="solid" onChange={this.handleRadioChange}>
-            <Radio.Button style={{ marginRight: 10}} value="last_six_month">最近六个月</Radio.Button>
-            <Radio.Button style={{ marginRight: 10}} value="last_month">最近一个月</Radio.Button>
-            <Radio.Button style={{ marginRight: 10}} value="last_week">最近一个星期</Radio.Button>
-            <Radio.Button style={{ marginRight: 10}} value="last_day">最近一天</Radio.Button>
+          <Radio.Group defaultValue="last week" buttonStyle="solid" onChange={this.handleRadioChange}>
+            <Radio.Button style={{ marginRight: 10}} value="last six month">最近六个月</Radio.Button>
+            <Radio.Button style={{ marginRight: 10}} value="last month">最近一个月</Radio.Button>
+            <Radio.Button style={{ marginRight: 10}} value="last week">最近一个星期</Radio.Button>
+            <Radio.Button style={{ marginRight: 10}} value="last day">最近一天</Radio.Button>
           </Radio.Group>
-          <PvUvChart />
+          <PvUvChart data={pvUvChart} />
         </div>
         <div className="title">
           某时间段内pv、uv查询
