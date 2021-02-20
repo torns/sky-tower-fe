@@ -1,5 +1,7 @@
 import React from 'react';
-import { Result, Button } from 'antd';
+import { Result, Button, message } from 'antd';
+import getQuery from '../../../../utils/getQuery';
+import reqwest from 'reqwest';
 import './index.less';
 
 // 日期格式化
@@ -32,13 +34,14 @@ class SimultaneousOnlineInfo extends React.Component {
   constructor () {
     super();
     this.state = {
+      simultaneousOnlineCount: 0,
       currentTime: new Date().Format("yyyy-MM-dd HH:mm:ss")
     };
+    this.query = getQuery();
   }
 
   componentDidMount () {
-    const { project_id } = this.props;
-    console.log(project_id);
+    this.getSimultaneousOnline();
   }
 
   handleClickJumpButton = () => {
@@ -48,12 +51,36 @@ class SimultaneousOnlineInfo extends React.Component {
   handleRefresh = () => {
     this.setState({
       currentTime: new Date().Format("yyyy-MM-dd HH:mm:ss")
-    })
+    });
+    this.getSimultaneousOnline();
+  }
+
+  getSimultaneousOnline = () => {
+    reqwest({
+      url: `${window.requestUrl}/get/simultaneous_online/pv_uv`,
+      method: 'get',
+      type: 'json',
+      crossOrigin: true, /* 跨域请求 */
+      data: {
+        user_id: localStorage.getItem('skyTowerUserId'),
+        project_id: this.query.project_id,
+        token: localStorage.getItem('skyTowerToken')
+      }
+    }).then((res) => {
+      const { err_no, err_message, data } = res;
+      if (err_no === 0) {
+        this.setState({
+          simultaneousOnlineCount: data.pv
+        });
+        message.success('数据获取成功～ 😚');
+      } else {
+        message.error(err_message || '似乎还有点问题...');
+      }
+    });
   }
 
   render() {
-    const { currentTime } = this.state;
-    const simultaneousOnlineCount = 127;
+    const { currentTime, simultaneousOnlineCount } = this.state;
 
     return (
       <div className="simultaneous-online-info">
