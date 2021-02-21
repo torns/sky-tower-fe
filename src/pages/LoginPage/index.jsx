@@ -31,10 +31,10 @@ class LoginPage extends Component {
           uid: '-1',
           name: 'image.png',
           status: 'done',
-          url: this.props.location && this.props.location.state && this.props.location.state.avatar,
+          url: decodeURIComponent(this.query.avatar),
         },
       ],
-      avatar: this.props.location && this.props.location.state && this.props.location.state.avatar,
+      avatar: decodeURIComponent(this.query.avatar),
     }
   }
 
@@ -322,22 +322,20 @@ class LoginPage extends Component {
 
   renderIsUpdate = () => {
     const { onUpdateFinish, onUpdateFinishFailed } = this;
-    const { location } = this.props;
     const { fileList } = this.state;
-    const { state = {} } = location;
     const { 
       user_id,
       username,
       email,
       phoneNumber,
-    } = state; // location state
+    } = this.query;
 
     return (
       <div>
         <Form
           {...layout}
           name="basic"
-          initialValues={{ user_id, username, email, phone: phoneNumber }}
+          initialValues={{ user_id, username: decodeURIComponent(username), email, phone: phoneNumber }}
           size="large"
           colon={false}
           style={{marginTop: 20}}
@@ -349,7 +347,7 @@ class LoginPage extends Component {
             name="user_id"
             rules={[{ required: true }]}
           >
-            <Input disabled allowClear defaultValue={user_id || this.query.user_id} />
+            <Input disabled allowClear defaultValue={user_id} />
           </Form.Item>
           <Form.Item
             label="用户头像"
@@ -374,7 +372,7 @@ class LoginPage extends Component {
             name="username"
             rules={[{ required: true, message: '请输入用户名' }]}
           >
-            <Input allowClear defaultValue={username || decodeURIComponent(this.query.username)} />
+            <Input allowClear defaultValue={decodeURIComponent(username)} />
           </Form.Item>
 
           <Form.Item

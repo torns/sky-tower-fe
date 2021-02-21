@@ -152,7 +152,7 @@ class HomePage extends Component {
     //  修改账号信息页面路由
     const updatePath = {
       pathname: '/login',
-      search: `?page_type=update&user_id=${user_id}&username=${username}`,
+      search: `?page_type=update&user_id=${user_id}&username=${username}&avatar=${encodeURIComponent(avatar)}&email=${email}&phoneNumber=${phoneNumber}`,
       state: {
         user_id,
         avatar,
