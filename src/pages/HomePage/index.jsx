@@ -30,6 +30,7 @@ class HomePage extends Component {
       usernameForLogin: '',
       isModalVisible: false,
       user_id: '',
+      avatar: '',
       username: '',
       email: '',
       phoneNumber: ''
@@ -60,12 +61,13 @@ class HomePage extends Component {
           }
         }).then((res) => {
           const { err_no, err_message, data } = res;
-          const { user_id, username, email, phone_number } = data;
+          const { user_id, avatar, username, email, phone_number } = data;
           
           if (err_no === 0 && err_message === 'success') {
             this.setState({
               isLogin: true,
               user_id,
+              avatar,
               username,
               email,
               phoneNumber: phone_number
@@ -140,7 +142,7 @@ class HomePage extends Component {
   }
 
   renderPageHeader = () => {
-    const { isLogin, user_id, username, phoneNumber, email } = this.state;
+    const { isLogin, user_id, avatar, username, phoneNumber, email } = this.state;
     // 注册页面路由
     const registerPath = {
       pathname: '/login',
@@ -153,6 +155,7 @@ class HomePage extends Component {
       search: `?page_type=update&user_id=${user_id}&username=${username}`,
       state: {
         user_id,
+        avatar,
         username,
         email,
         phoneNumber

@@ -1,5 +1,5 @@
 import React, { Component }  from 'react';
-import { Form, Input, Button, Card, PageHeader, Select, message } from 'antd';
+import { Form, Input, Button, Card, PageHeader, Select, message, Upload, Avatar } from 'antd';
 import { Link } from "react-router-dom";
 import getQuery from '../../utils/getQuery.js';
 import reqwest from 'reqwest';
@@ -26,11 +26,21 @@ class LoginPage extends Component {
     super(props);
     this.query = getQuery();
     this.state = {
+      fileList: [
+        {
+          uid: '-1',
+          name: 'image.png',
+          status: 'done',
+          url: this.props.location && this.props.location.state && this.props.location.state.avatar,
+        },
+      ],
+      avatar: this.props.location && this.props.location.state && this.props.location.state.avatar,
     }
   }
 
   onUpdateFinish = values => {
     const { history } = this.props;
+    const { avatar } = this.state;
 
     reqwest({
       url: `${window.requestUrl}/update/user_info`,
@@ -39,6 +49,7 @@ class LoginPage extends Component {
       crossOrigin: true, /* 跨域请求 */
       data: {
         user_id: localStorage.getItem("skyTowerUserId"),
+        avatar,
         username: values.username,
         password: values.password,
         email: values.email,
@@ -146,6 +157,54 @@ class LoginPage extends Component {
       default: return '注册登陆页';
     }
   }
+
+  uploadImage = async options => {
+    const { file, onSuccess } = options;
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("token", localStorage.getItem('skyTowerToken'));
+
+    await reqwest({
+      url: `${window.requestUrl}/image_upload`,
+      method: 'post',
+      type: 'json',
+      crossOrigin: true, /* 跨域请求 */
+      processData: false, /* 必不可少 */
+      data: formData
+    }).then((res) => {
+      const { err_no, err_message, data } = res;
+      if (err_no === 0) {
+        this.setState({
+          avatar: data.url
+        })
+        onSuccess("Ok");
+      } else {
+        message.error(err_message || '似乎有点问题...');
+      }
+    });
+  };
+
+  onChange = ({ fileList: newFileList }) => {
+    this.setState({
+      fileList: newFileList
+    });
+  };
+
+  onPreview = async file => {
+    let src = file.url;
+    if (!src) {
+      src = await new Promise(resolve => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file.originFileObj);
+        reader.onload = () => resolve(reader.result);
+      });
+    }
+    const image = new Image();
+    image.src = src;
+    const imgWindow = window.open(src);
+    imgWindow.document.write(image.outerHTML);
+  };
 
   renderIsLogin = () => {
     const { onLoginFinish, onLoginFinishFailed } = this;
@@ -264,12 +323,13 @@ class LoginPage extends Component {
   renderIsUpdate = () => {
     const { onUpdateFinish, onUpdateFinishFailed } = this;
     const { location } = this.props;
+    const { fileList } = this.state;
     const { state = {} } = location;
     const { 
       user_id,
       username,
       email,
-      phoneNumber
+      phoneNumber,
     } = state; // location state
 
     return (
@@ -290,6 +350,24 @@ class LoginPage extends Component {
             rules={[{ required: true }]}
           >
             <Input disabled allowClear defaultValue={user_id || this.query.user_id} />
+          </Form.Item>
+          <Form.Item
+            label="用户头像"
+            name="url"
+            rules={[{ required: false }]}
+          >
+            <Upload
+              data={{
+                token: localStorage.getItem('skyTowerToken')
+              }}
+              customRequest={this.uploadImage}
+              listType="picture-card"
+              fileList={fileList}
+              onChange={this.onChange}
+              onPreview={this.onPreview}
+            >
+              {fileList.length === 0 && '+ Upload'}
+            </Upload>
           </Form.Item>
           <Form.Item
             label="用户名"
