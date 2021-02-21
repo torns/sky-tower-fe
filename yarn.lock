@@ -2272,7 +2272,7 @@
   dependencies:
     "color-convert" "^2.0.1"
 
-"antd@^4.7.2":
+"antd@^4.10.2":
   "integrity" "sha1-0oX4soJXaQI1ijk3puQOCbctQpE="
   "resolved" "https://registry.npm.taobao.org/antd/download/antd-4.10.2.tgz?cache=0&sync_timestamp=1610351188281&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fantd%2Fdownload%2Fantd-4.10.2.tgz"
   "version" "4.10.2"
